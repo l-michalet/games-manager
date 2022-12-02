@@ -15,7 +15,7 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 
 		TournamentService tournamentService = new TournamentService(new GroupService(new TeamRepository(), new GroupRepository()));
-		tournamentService.createGroupStage(4,4);
-		tournamentService.scheduleGroupStage();
+		tournamentService.createGroups(4,4);
+		tournamentService.scheduleGroups();
 	}
 }

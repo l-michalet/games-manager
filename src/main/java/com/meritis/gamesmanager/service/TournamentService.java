@@ -9,19 +9,19 @@ public class TournamentService {
     private final GroupService groupService;
 
     //********* Prepare group stages
-    public void createGroupStage(int nbOfGroups, int nbOfTeamsPerGroup) {
+    public void createGroups(int nbOfGroups, int nbOfTeamsPerGroup) {
         System.out.println("**********************************\nGenerated groups:");
-        groupService.createGroupStage(nbOfGroups, nbOfTeamsPerGroup);
+        groupService.createGroups(nbOfGroups, nbOfTeamsPerGroup);
     }
 
-    public void scheduleGroupStage() {
+    public void scheduleGroups() {
         System.out.println("**********************************\nGenerated groups schedules:");
-        groupService.scheduleGroupStage();
+        groupService.scheduleGroups();
     }
 
-//    //********* Play group stages
-//    public void playGroupStage() {
+    //********* Play group stages
+//    public void playGroups() {
 //        System.out.println("**********************************\nPlay group stages:");
-//        groupService.playGroupStage();
+//        groupService.playGroups();
 //    }
 }

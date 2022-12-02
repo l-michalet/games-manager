@@ -21,13 +21,14 @@ public class GroupService {
     private final TeamRepository teamRepository;
     private final GroupRepository groupRepository;
     private static final Team BREAK = new Team("BREAK");
+    private static final int FIRST_ASCII_CHARACTER = 65;
 
 
-    public void createGroupStage(int nbOfGroups, int nbOfTeamsPerGroup) {
+    public void createGroups(int nbOfGroups, int nbOfTeamsPerGroup) {
         Map<String, Team> allTeams = teamRepository.findAll();
         int nbOfTeams = nbOfGroups * nbOfTeamsPerGroup;
         if (nbOfTeams > allTeams.size()) {
-            System.out.format("tournamentService | Asked for too many teams : %d > %d \n", nbOfTeams, allTeams.size());
+            System.out.format("tournamentService | Asked for too many teams: %d > %d \n", nbOfTeams, allTeams.size());
             System.exit(0);
         }
 
@@ -36,24 +37,23 @@ public class GroupService {
 
         for (int i=0; i<nbOfGroups; i++) {
             List<Team> teamsInGroup = teams.subList(i*nbOfTeamsPerGroup, (i+1)*nbOfTeamsPerGroup);
-            groupRepository.save(new Group(teamsInGroup));
+            String groupName = String.valueOf((char)(i + FIRST_ASCII_CHARACTER)); // A, B, C, ....
+            groupRepository.save(new Group(groupName,teamsInGroup));
             String teamsList = teamsInGroup.stream().map(Team::getName).collect(Collectors.joining(" - "));
-            System.out.format("Group %d: %s \n", i++, teamsList);
+            System.out.format("Group %s: %s \n", groupName, teamsList);
         }
     }
 
-    public void scheduleGroupStage() {
+    public void scheduleGroups() {
         List<Group> groups = groupRepository.findAll();
-        int groupNumber = 0;
         for (Group group : groups) {
-            groupNumber++;
             System.out.println("\n**********************************");
-            System.out.format("Group %d :\n", groupNumber);
-            scheduleGroupGames(group);
+            System.out.format("Group %s:\n", group.getName());
+            scheduleGroup(group);
         }
     }
 
-    private void scheduleGroupGames(Group group) {
+    private void scheduleGroup(Group group) {
         List<Team> teams = group.getTeams();
         int numOfTeams = teams.size();
         List<Team> evenTeams = new ArrayList<>(teams.subList(1, numOfTeams));
@@ -86,8 +86,25 @@ public class GroupService {
         groupRepository.save(group);
     }
 
-//    public void playGroupStage() {
+//    public void playGroups() {
 //        List<Group> groups = groupRepository.findAll();
-//        System.out.println("");
+//        List<Group, Map<Game, Integer>
+//        for (Group group : groups) {
+//            groupNumber++;
+//            System.out.println("\n**********************************");
+//            System.out.format("Group %s :\n", group.getName());
+//            playGroup(group);
+//        }
+//    }
+//
+//    public void playGroup(Group group) {
+//        Map<Game, Integer>
+//        int groupNumber = 0;
+//        for (Group group : groups) {
+//            groupNumber++;
+//            System.out.println("\n**********************************");
+//            System.out.format("Group %d :\n", groupNumber);
+//            scheduleGroup(group);
+//        }
 //    }
 }
