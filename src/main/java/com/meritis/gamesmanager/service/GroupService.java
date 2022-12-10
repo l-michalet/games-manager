@@ -2,6 +2,7 @@ package com.meritis.gamesmanager.service;
 
 import com.meritis.gamesmanager.model.Game;
 import com.meritis.gamesmanager.model.Group;
+import com.meritis.gamesmanager.model.GroupDay;
 import com.meritis.gamesmanager.model.Team;
 import com.meritis.gamesmanager.repository.GroupRepository;
 import com.meritis.gamesmanager.repository.TeamRepository;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 public class GroupService {
     private final TeamRepository teamRepository;
     private final GroupRepository groupRepository;
+
+    private final GameService gameService;
+
     private static final Team BREAK = new Team("BREAK");
     private static final int FIRST_ASCII_CHARACTER = 65;
 
@@ -37,7 +40,7 @@ public class GroupService {
 
         for (int i=0; i<nbOfGroups; i++) {
             List<Team> teamsInGroup = teams.subList(i*nbOfTeamsPerGroup, (i+1)*nbOfTeamsPerGroup);
-            String groupName = String.valueOf((char)(i + FIRST_ASCII_CHARACTER)); // A, B, C, ....
+            String groupName = Character.toString(i + FIRST_ASCII_CHARACTER); // A, B, C, ....
             groupRepository.save(new Group(groupName,teamsInGroup));
             String teamsList = teamsInGroup.stream().map(Team::getName).collect(Collectors.joining(" - "));
             System.out.format("Group %s: %s \n", groupName, teamsList);
@@ -63,48 +66,45 @@ public class GroupService {
         }
         int nbOfRounds = evenTeams.size();
 
-        Map<Game, Integer> schedule = new HashMap<>();
+        List<GroupDay> schedule = new ArrayList<>();
 
-        int count = 0;
+        int day = 0;
         for (int round = nbOfRounds-1; round >= 0; round--)  {
-            System.out.println("----- Game " + (++count) + " -----");
+            System.out.println("----- Day " + (++day) + " -----");
+            List<Game> gamesOfDay = new ArrayList<>();
             int teamId = round % nbOfRounds;
             if (!evenTeams.get(teamId).equals(BREAK)) {
                 System.out.println(teams.get(0).getName() + " vs. "+ evenTeams.get(teamId).getName());
-                schedule.put(new Game(teams.get(0), evenTeams.get(teamId)), count);
+                gamesOfDay.add(new Game(teams.get(0), evenTeams.get(teamId)));
             }
             for (int i = 1; i < (nbOfRounds+1)/2; i++) {
                 int firstTeam = (round + i) % nbOfRounds;
                 int secondTeam = (round  + nbOfRounds - i) % nbOfRounds;
                 if (!evenTeams.get(firstTeam).equals(BREAK) && !evenTeams.get(secondTeam).equals(BREAK)) {
                     System.out.println(evenTeams.get(firstTeam).getName() + " vs. "+ evenTeams.get(secondTeam).getName());
-                    schedule.put(new Game(evenTeams.get(firstTeam), evenTeams.get(secondTeam)), count);
+                    gamesOfDay.add(new Game(evenTeams.get(firstTeam), evenTeams.get(secondTeam)));
                 }
             }
+            schedule.add(new GroupDay(day, gamesOfDay));
         }
-        group.setSchedule(schedule);
+        group.setGroupDays(schedule);
         groupRepository.save(group);
     }
 
-//    public void playGroups() {
-//        List<Group> groups = groupRepository.findAll();
-//        List<Group, Map<Game, Integer>
-//        for (Group group : groups) {
-//            groupNumber++;
-//            System.out.println("\n**********************************");
-//            System.out.format("Group %s :\n", group.getName());
-//            playGroup(group);
-//        }
-//    }
-//
-//    public void playGroup(Group group) {
-//        Map<Game, Integer>
-//        int groupNumber = 0;
-//        for (Group group : groups) {
-//            groupNumber++;
-//            System.out.println("\n**********************************");
-//            System.out.format("Group %d :\n", groupNumber);
-//            scheduleGroup(group);
-//        }
-//    }
+    public void playGroups() {
+        List<Group> groups = groupRepository.findAll();
+        for (Group group : groups) {
+            System.out.println("\n**********************************");
+            System.out.format("Group %s :\n", group.getName());
+            playGroup(group.getGroupDays());
+        }
+    }
+
+    public void playGroup(List<GroupDay> groupDays) {
+        for (GroupDay groupDay : groupDays) {
+            System.out.println("\n----------------------");
+            System.out.format("Day %d :\n", groupDay.getDay());
+            gameService.playGames(groupDay.getGamesOfDay());
+        }
+    }
 }

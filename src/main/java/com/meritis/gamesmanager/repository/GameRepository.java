@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public class GameRepository {
-
     private static final List<Game> games = new ArrayList<>();
 }

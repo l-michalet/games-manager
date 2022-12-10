@@ -20,8 +20,8 @@ public class TournamentService {
     }
 
     //********* Play group stages
-//    public void playGroups() {
-//        System.out.println("**********************************\nPlay group stages:");
-//        groupService.playGroups();
-//    }
+    public void playGroups() {
+        System.out.println("**********************************\nPlay group stages:");
+        groupService.playGroups();
+    }
 }
