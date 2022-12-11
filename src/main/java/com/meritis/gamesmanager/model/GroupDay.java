@@ -9,6 +9,5 @@ import java.util.List;
 @Data
 public class GroupDay {
     private int day;
-    private List<Game> gamesOfDay;
-
+    private List<String> gamesOfDay;
 }

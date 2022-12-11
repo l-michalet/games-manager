@@ -6,15 +6,14 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Game {
-    private Team home;
-    private Team away;
-    private boolean played;
-    private Team winner;
+    private String id;
+    private String home;
+    private String away;
     private Score score;
 
-    public Game(Team home, Team away) {
+    public Game(String id, String home, String away) {
+        this.id = id;
         this.home = home;
         this.away = away;
-        played = false;
     }
 }

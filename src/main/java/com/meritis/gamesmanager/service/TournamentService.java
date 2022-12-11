@@ -24,4 +24,9 @@ public class TournamentService {
         System.out.println("**********************************\nPlay group stages:");
         groupService.playGroups();
     }
+
+    public void getGroupResults() {
+        System.out.println("**********************************\nGroup stages results:");
+        groupService.getGroupsResults();
+    }
 }

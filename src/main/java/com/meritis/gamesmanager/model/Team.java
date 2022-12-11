@@ -6,11 +6,13 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Team {
-    private String name;
+    private String shortName;
+    private String fullName;
     private int fifaRank;
     private int shape;
 
-    public Team(String name) {
-        this.name = name;
+    public Team(String shortName, String fullName) {
+        this.shortName = shortName;
+        this.fullName = fullName;
     }
 }

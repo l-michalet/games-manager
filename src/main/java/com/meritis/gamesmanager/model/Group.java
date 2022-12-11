@@ -9,13 +9,13 @@ import java.util.List;
 @Data
 public class Group {
     private String name;
-    private List<Team> teams;
-    private int currentRound;
+    private List<String> teamIds;
     private List<GroupDay> groupDays;
+    private int currentDay;
 
-    public Group(String name, List<Team> teams) {
+    public Group(String name, List<String> teamIds) {
         this.name = name;
-        this.teams = teams;
-        this.currentRound = 0;
+        this.teamIds = teamIds;
+        this.currentDay = 0;
     }
 }
