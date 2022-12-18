@@ -11,17 +11,15 @@ import com.meritis.gamesmanager.service.TeamService;
 import com.meritis.gamesmanager.service.TournamentService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
 public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		ApplicationContext applicationContext = SpringApplication.run(Application.class, args);
 
-		ResultsService resultsService = new ResultsService(new TeamResultsRepository());
-		GameService gameService = new GameService(new GameRepository(), resultsService);
-		TeamService teamService = new TeamService(new TeamRepository());
-		TournamentService tournamentService = new TournamentService(new GroupService(new GroupRepository(), gameService, teamService, resultsService));
+		TournamentService tournamentService = applicationContext.getBean(TournamentService.class);
 
 		tournamentService.createGroups(4,4);
 		tournamentService.scheduleGroups();

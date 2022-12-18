@@ -108,7 +108,7 @@ public class GroupService {
     private void playGroup(List<GroupDay> groupDays) {
         for (GroupDay groupDay : groupDays) {
             System.out.println("\n----------------------");
-            System.out.format("Day %d :", groupDay.getDay());
+            System.out.format("Day %d: \n", groupDay.getDay());
             gameService.playGames(groupDay.getGamesOfDay());
         }
     }
