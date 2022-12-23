@@ -1,13 +1,5 @@
 package com.meritis.gamesmanager;
 
-import com.meritis.gamesmanager.repository.GameRepository;
-import com.meritis.gamesmanager.repository.GroupRepository;
-import com.meritis.gamesmanager.repository.TeamRepository;
-import com.meritis.gamesmanager.repository.TeamResultsRepository;
-import com.meritis.gamesmanager.service.GameService;
-import com.meritis.gamesmanager.service.GroupService;
-import com.meritis.gamesmanager.service.ResultsService;
-import com.meritis.gamesmanager.service.TeamService;
 import com.meritis.gamesmanager.service.TournamentService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

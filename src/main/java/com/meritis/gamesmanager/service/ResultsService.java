@@ -1,47 +1,49 @@
 package com.meritis.gamesmanager.service;
 
 import com.meritis.gamesmanager.model.Game;
-import com.meritis.gamesmanager.model.Score;
-import com.meritis.gamesmanager.model.TeamResults;
-import com.meritis.gamesmanager.repository.TeamResultsRepository;
+import com.meritis.gamesmanager.model.Results;
+import com.meritis.gamesmanager.repository.ResultsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ResultsService {
-    private final  TeamResultsRepository teamResultsRepository;
+    private final ResultsRepository resultsRepository;
 
     public void updateResults(Game game) {
-        Score score = game.getScore();
-        this.updateTeamResults(game.getHome(), score.getHomeGoals(), score.getAwayGoals());
-        this.updateTeamResults(game.getAway(), score.getAwayGoals(), score.getHomeGoals());
+        this.updateTeamResults(game.getHomeTeam(), game.getHomeGoals(), game.getAwayGoals());
+        this.updateTeamResults(game.getAwayTeam(), game.getAwayGoals(), game.getHomeGoals());
     }
 
     public void updateTeamResults(String teamId, int goalsFor, int goalsAgainst) {
-        TeamResults teamResults = teamResultsRepository.findById(teamId);
-        if (teamResults == null) {
-            teamResults = new TeamResults(teamId);
+        Optional<Results> optionalResults = resultsRepository.findById(teamId);
+        Results results;
+        if (optionalResults.isEmpty()) {
+            results = new Results(teamId);
+        } else {
+            results = optionalResults.get();
         }
 
-        teamResults.addGoalsFor(goalsFor);
-        teamResults.addGoalsAgainst(goalsAgainst);
+        results.addGoalsFor(goalsFor);
+        results.addGoalsAgainst(goalsAgainst);
 
         if (goalsFor - goalsAgainst > 0) {
-            teamResults.win();
+            results.win();
         } else if(goalsFor - goalsAgainst < 0) {
-            teamResults.loss();
+            results.loss();
         } else {
-            teamResults.draw();
+            results.draw();
         }
-        teamResultsRepository.save(teamResults);
+        resultsRepository.save(results);
     }
 
-    public List<TeamResults> getGroupResults(List<String> teamIds) {
-        List<TeamResults> groupResults = teamResultsRepository.findById(teamIds);
-        groupResults.sort(TeamResults::compareTo);
+    public List<Results> getGroupResults(List<String> teamIds) {
+        List<Results> groupResults = resultsRepository.findAllById(teamIds);
+        groupResults.sort(Results::compareTo);
         return groupResults;
     }
 }

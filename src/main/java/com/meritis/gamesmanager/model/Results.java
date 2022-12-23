@@ -1,23 +1,41 @@
 package com.meritis.gamesmanager.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table
 @Data
-public class TeamResults implements Comparable<TeamResults> {
-    private String shortName;
+@NoArgsConstructor
+public class Results implements Comparable<Results> {
+    @Id
+    @Column
+    private String teamName;
+    @Column
     private int gamesPlayed = 0;
+    @Column
     private int wins = 0;
+    @Column
     private int draws = 0;
+    @Column
     private int losses = 0;
+    @Column
     private int points = 0;
+    @Column
     private int goalsFor = 0;
+    @Column
     private int goalsAgainst = 0;
+    @Column
     private int goalsDiff = 0;
 
-    public TeamResults(String shortName) {
-        this.shortName = shortName;
+    public Results(String teamName) {
+        this.teamName = teamName;
     }
-
 
     public void addGoalsFor(int newGoalsFor) {
         this.goalsFor += newGoalsFor;
@@ -47,18 +65,18 @@ public class TeamResults implements Comparable<TeamResults> {
     }
 
     @Override
-    public int compareTo(TeamResults teamResults) {
-        int result = Integer.compare(teamResults.points, this.points);
+    public int compareTo(Results results) {
+        int result = Integer.compare(results.points, this.points);
         if (result != 0) { return result; }
 
-        result = Integer.compare(teamResults.goalsDiff, this.goalsDiff);
+        result = Integer.compare(results.goalsDiff, this.goalsDiff);
         if (result != 0) { return result; }
 
-        return Integer.compare(teamResults.goalsFor, this.goalsFor);
+        return Integer.compare(results.goalsFor, this.goalsFor);
     }
 
     public String toString() {
-        return shortName + " | " + gamesPlayed + " | " + wins + " | " + draws + " | " + losses
+        return teamName + " | " + gamesPlayed + " | " + wins + " | " + draws + " | " + losses
                 + " | " + goalsFor + " | " + goalsAgainst + " | " + goalsDiff + " || " + points+ " |";
     }
 }

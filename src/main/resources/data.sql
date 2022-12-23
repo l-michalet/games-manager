@@ -1,0 +1,16 @@
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('BRA', 'Brazil', 1, 50, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('BEL', 'Belgium', 2, 50, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('ARG', 'Argentina', 3, 70, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('FRA', 'France', 4, 100, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('ENG', 'England', 5, 60, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('ITA', 'Italy', 6, 20, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('ESP', 'Spain', 7, 60, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('NDL', 'Netherlands', 8, 50, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('POR', 'Portugal', 9, 80, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('DNK', 'Denmark', 10, 50, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('DEU', 'Germany', 11, 30, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('CRO', 'Croatia', 12, 70, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('MEX', 'Mexico', 13, 40, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('URY', 'Uruguay', 14, 80, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('CHE', 'Switzerland', 15, 50, '');
+INSERT INTO TEAM (short_name, full_name, fifa_rank, shape, group_name) VALUES ('USA', 'United-States', 16, 40, '');
