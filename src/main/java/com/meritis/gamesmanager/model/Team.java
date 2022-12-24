@@ -25,11 +25,9 @@ public class Team {
     @Column
     private String groupName;
 
-    public Team(String shortName, String fullName, int fifaRank, int shape, String groupName) {
+    public Team(String shortName, String fullName, int shape) {
         this.shortName = shortName;
         this.fullName = fullName;
-        this.fifaRank = fifaRank;
         this.shape = shape;
-        this.groupName = groupName;
     }
 }

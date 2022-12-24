@@ -49,7 +49,7 @@ public class Results implements Comparable<Results> {
 
     public void win() {
         this.wins++;
-        this.points +=3;
+        this.points+=3;
         this.gamesPlayed++;
     }
 
