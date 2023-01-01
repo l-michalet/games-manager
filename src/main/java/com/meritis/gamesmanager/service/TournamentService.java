@@ -1,5 +1,7 @@
 package com.meritis.gamesmanager.service;
 
+import com.meritis.gamesmanager.model.Tournament;
+import com.meritis.gamesmanager.repository.TournamentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -7,17 +9,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TournamentService {
     private final GroupService groupService;
+    private final TournamentRepository tournamentRepository;
 
-    //********* Prepare group stages
-    public void createGroups(int nbOfGroups, int nbOfTeamsPerGroup) {
-        System.out.println("**********************************\nGenerated groups:");
-        groupService.createGroups(nbOfGroups, nbOfTeamsPerGroup);
+    public void createTournament(String name, int nbOfGroups, int nbOfTeamsPerGroup) {
+        Tournament tournament = new Tournament(name);
+        System.out.println("**********************************\nGenerate groups:");
+        groupService.prepareGroups(tournament.getId(), nbOfGroups, nbOfTeamsPerGroup);
+        tournamentRepository.save(new Tournament(name));
     }
 
-    public void scheduleGroups() {
-        System.out.println("**********************************\nGenerated groups schedules:");
-        groupService.scheduleGroups();
-    }
 
     //********* Play group stages
     public void playGroups() {
@@ -25,8 +25,8 @@ public class TournamentService {
         groupService.playGroups();
     }
 
-    public void getGroupResults() {
+    public void getGroupResults(int tournamentId) {
         System.out.println("**********************************\nGroup stages results:");
-        groupService.getGroupsResults();
+        groupService.getGroupsResults(tournamentId);
     }
 }

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class Results implements Comparable<Results> {
     @Id
     @Column
-    private String teamName;
+    private int teamId;
     @Column
     private int gamesPlayed = 0;
     @Column
@@ -33,8 +33,8 @@ public class Results implements Comparable<Results> {
     @Column
     private int goalsDiff = 0;
 
-    public Results(String teamName) {
-        this.teamName = teamName;
+    public Results(int teamId) {
+        this.teamId = teamId;
     }
 
     public void addGoalsFor(int newGoalsFor) {
@@ -76,7 +76,7 @@ public class Results implements Comparable<Results> {
     }
 
     public String toString() {
-        return teamName + " | " + gamesPlayed + " | " + wins + " | " + draws + " | " + losses
+        return teamId + " | " + gamesPlayed + " | " + wins + " | " + draws + " | " + losses
                 + " | " + goalsFor + " | " + goalsAgainst + " | " + goalsDiff + " || " + points+ " |";
     }
 }

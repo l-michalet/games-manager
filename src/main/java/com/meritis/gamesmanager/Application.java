@@ -12,10 +12,7 @@ public class Application {
 		ApplicationContext applicationContext = SpringApplication.run(Application.class, args);
 
 		TournamentService tournamentService = applicationContext.getBean(TournamentService.class);
+		tournamentService.createTournament("New tournament", 4, 4);
 
-		tournamentService.createGroups(4,4);
-		tournamentService.scheduleGroups();
-		tournamentService.playGroups();
-		tournamentService.getGroupResults();
 	}
 }

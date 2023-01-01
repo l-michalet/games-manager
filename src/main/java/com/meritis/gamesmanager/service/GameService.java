@@ -19,11 +19,10 @@ public class GameService {
 
     private static final List<Integer> goalsDistribution = Arrays.asList(0,0,0,0,1,1,1,1,1,2,2,2,2,3,3,3,4,4,5);
 
-    public void scheduleGame(String home, String away, String group, int day, int number) {
+    public void scheduleGame(int home, int away, String group, int day) {
         System.out.println(home + " vs. "+ away);
 
-        String gameId = group + day + number;
-        Game game = new Game(gameId, home, away, group, day);
+        Game game = new Game(home, away, group, day);
         gameRepository.save(game);
     }
 
@@ -43,7 +42,7 @@ public class GameService {
         generateRandomScore(game);
         gameRepository.save(game);
         resultsService.updateResults(game);
-        System.out.format(game.getHomeTeam() + " %d : %d " + game.getAwayTeam() +"\n", game.getHomeGoals(), game.getAwayGoals());
+        System.out.format(game.getHomeTeamId() + " %d : %d " + game.getAwayTeamId() +"\n", game.getHomeGoals(), game.getAwayGoals());
     }
 
     private void generateRandomScore(Game game){

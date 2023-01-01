@@ -18,13 +18,13 @@ public class TeamService {
         return teamRepository.findAll();
     }
 
-    public void saveAll(List<Team> teams) {
-        teamRepository.saveAll(teams);
+    public List<Team> saveAll(List<Team> teams) {
+        return teamRepository.saveAll(teams);
     }
 
-    public Map<String, List<String>> allTeamIdsPerGroup() {
-        return teamRepository.findAll().stream()
+    public Map<String, List<Integer>> allTeamIdsPerGroup(int tournamentId) {
+        return teamRepository.findAllByTournamentId(tournamentId).stream()
                 .filter(t -> t.getGroupName() != null)
-                .collect(Collectors.groupingBy(Team::getGroupName, Collectors.mapping(Team::getShortName, Collectors.toList())));
+                .collect(Collectors.groupingBy(Team::getGroupName, Collectors.mapping(Team::getTeamInfoId, Collectors.toList())));
     }
 }

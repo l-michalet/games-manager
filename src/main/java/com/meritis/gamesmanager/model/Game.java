@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,11 +18,12 @@ import javax.persistence.Table;
 public class Game {
     @Id
     @Column
-    private String id;
+    @GeneratedValue
+    private int id;
     @Column
-    private String homeTeam;
+    private int homeTeamId;
     @Column
-    private String awayTeam;
+    private int awayTeamId;
     @Column
     private String groupName;
     @Column
@@ -31,11 +33,15 @@ public class Game {
     @Column
     private int awayGoals = 0;
 
-    public Game(String id, String homeTeam, String awayTeam, String groupName, int groupDay) {
-        this.id = id;
-        this.homeTeam = homeTeam;
-        this.awayTeam = awayTeam;
+    public Game(int homeTeamId, int awayTeamId, String groupName, int groupDay) {
+        this.homeTeamId = homeTeamId;
+        this.awayTeamId = awayTeamId;
         this.groupName = groupName;
         this.groupDay = groupDay;
+    }
+
+    public Game(int homeTeamId, int awayTeamId) {
+        this.homeTeamId = homeTeamId;
+        this.awayTeamId = awayTeamId;
     }
 }

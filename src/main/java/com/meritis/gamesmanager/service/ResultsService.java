@@ -15,11 +15,11 @@ public class ResultsService {
     private final ResultsRepository resultsRepository;
 
     public void updateResults(Game game) {
-        this.updateTeamResults(game.getHomeTeam(), game.getHomeGoals(), game.getAwayGoals());
-        this.updateTeamResults(game.getAwayTeam(), game.getAwayGoals(), game.getHomeGoals());
+        this.updateTeamResults(game.getHomeTeamId(), game.getHomeGoals(), game.getAwayGoals());
+        this.updateTeamResults(game.getAwayTeamId(), game.getAwayGoals(), game.getHomeGoals());
     }
 
-    public void updateTeamResults(String teamId, int goalsFor, int goalsAgainst) {
+    public void updateTeamResults(int teamId, int goalsFor, int goalsAgainst) {
         Optional<Results> optionalResults = resultsRepository.findById(teamId);
         Results results;
         if (optionalResults.isEmpty()) {
@@ -41,7 +41,7 @@ public class ResultsService {
         resultsRepository.save(results);
     }
 
-    public List<Results> getGroupResults(List<String> teamIds) {
+    public List<Results> getGroupResults(List<Integer> teamIds) {
         List<Results> groupResults = resultsRepository.findAllById(teamIds);
         groupResults.sort(Results::compareTo);
         return groupResults;

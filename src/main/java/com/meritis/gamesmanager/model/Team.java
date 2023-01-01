@@ -5,7 +5,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -14,20 +17,23 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class Team {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
+    @SequenceGenerator(name = "team_seq", sequenceName = "team_id_seq", allocationSize = 1)
     @Column
-    private String shortName;
+    private int id;
+
     @Column
-    private String fullName;
+    private int teamInfoId;
+
     @Column
-    private int fifaRank;
-    @Column
-    private int shape;
+    private int tournamentId;
+
     @Column
     private String groupName;
 
-    public Team(String shortName, String fullName, int shape) {
-        this.shortName = shortName;
-        this.fullName = fullName;
-        this.shape = shape;
+    public Team(int teamInfoId, int tournamentId, String groupName) {
+        this.teamInfoId = teamInfoId;
+        this.tournamentId = tournamentId;
+        this.groupName = groupName;
     }
 }
