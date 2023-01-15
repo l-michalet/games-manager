@@ -5,16 +5,22 @@ import com.meritis.gamesmanager.repository.TournamentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TournamentService {
     private final GroupService groupService;
     private final TournamentRepository tournamentRepository;
 
-    public void createTournament(String name, int nbOfGroups, int nbOfTeamsPerGroup) {
+    public void createTournament(String name, List<Integer> teamInfoIds, int nbOfGroups) {
+        if (teamInfoIds == null) {
+            System.out.println("Error, teamInfoIds is null");
+            return;
+        }
         Tournament tournament = new Tournament(name);
         System.out.println("**********************************\nGenerate groups:");
-        groupService.prepareGroups(tournament.getId(), nbOfGroups, nbOfTeamsPerGroup);
+        groupService.prepareGroups(tournament.getId(), teamInfoIds, nbOfGroups);
         tournamentRepository.save(new Tournament(name));
     }
 

@@ -28,20 +28,15 @@ public class GroupService {
     private static final int FIRST_ASCII_CHARACTER = 65;
 
 
-    public void prepareGroups(int tournamentId, int nbOfGroups, int nbOfTeamsPerGroup) {
-        this.createGroups(tournamentId, nbOfGroups, nbOfTeamsPerGroup);
+    public void prepareGroups(int tournamentId, List<Integer> teamInfoIds, int nbOfGroups) {
+        this.createGroups(tournamentId, teamInfoIds, nbOfGroups);
         this.scheduleGroups(tournamentId);
     }
 
-    private List<GroupResponse> createGroups(int tournamentId, int nbOfGroups, int nbOfTeamsPerGroup) {
-        List<TeamInfo> allTeamInfos = teamInfoService.getAllTeamInfos();
-        int nbOfTeams = nbOfGroups * nbOfTeamsPerGroup;
-        if (nbOfTeams > allTeamInfos.size()) {
-            System.out.format("groupService | Asked for too many teams: %d > %d \n", nbOfTeams, allTeamInfos.size());
-            System.exit(0);
-        }
+    private List<GroupResponse> createGroups(int tournamentId, List<Integer> teamInfoIds, int nbOfGroups) {
+        int nbOfTeamsPerGroup = teamInfoIds.size() / nbOfGroups;
 
-        Collections.shuffle(allTeamInfos);
+        Collections.shuffle(teamInfoIds);
 
         List<GroupResponse> groupResponses = new ArrayList<>();
         List<Team> chosenTeams = new ArrayList<>();
@@ -50,7 +45,7 @@ public class GroupService {
             String groupName = Character.toString(i + FIRST_ASCII_CHARACTER);
 
             // Collect teams for the group
-            List<TeamInfo> groupTeamInfos = allTeamInfos.subList(i*nbOfTeamsPerGroup, (i+1)*nbOfTeamsPerGroup);
+            List<TeamInfo> groupTeamInfos = teamInfoService.getTeamInfos(teamInfoIds).subList(i*nbOfTeamsPerGroup, (i+1)*nbOfTeamsPerGroup);
             for (TeamInfo groupTeamInfo : groupTeamInfos) {
                 chosenTeams.add(new Team(groupTeamInfo.getId(), tournamentId, groupName));
             }

@@ -19,16 +19,16 @@ import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-public class TeamInfoController {
+public class TeamInfoApi {
     private final TeamInfoRepository teamInfoRepository;
 
-    public TeamInfoController(TeamInfoRepository teamInfoRepository) {
+    public TeamInfoApi(TeamInfoRepository teamInfoRepository) {
         this.teamInfoRepository = teamInfoRepository;
     }
 
     @GetMapping("/team")
     public ResponseEntity<TeamInfo> findTeamInfo(@RequestParam("shortName") int teamInfoId) {
-        System.out.format("[TeamInfoController] findTeam shortName=%s", teamInfoId);
+        System.out.format("[TeamInfoApi] findTeam shortName=%s", teamInfoId);
         Optional<TeamInfo> optionalTeam = teamInfoRepository.findById(teamInfoId);
         if (optionalTeam.isEmpty()) {
             throw new RuntimeException();
@@ -51,7 +51,7 @@ public class TeamInfoController {
 
     @GetMapping("/teams")
     public ResponseEntity<List<TeamInfo>> listTeamInfos(@RequestParam("groupName") Optional<String> groupName) {
-        System.out.format("[TeamInfoController] listTeams groupName=%s", groupName);
+        System.out.format("[TeamInfoApi] listTeams groupName=%s", groupName);
 
         return groupName.map(s -> new ResponseEntity<>(teamInfoRepository.findAll(), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(teamInfoRepository.findAll(), HttpStatus.OK));

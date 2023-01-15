@@ -5,6 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 @SpringBootApplication
 public class Application {
 
@@ -12,7 +17,9 @@ public class Application {
 		ApplicationContext applicationContext = SpringApplication.run(Application.class, args);
 
 		TournamentService tournamentService = applicationContext.getBean(TournamentService.class);
-		tournamentService.createTournament("New tournament", 4, 4);
+
+		List<Integer> teamInfoIds = IntStream.rangeClosed(1, 16).boxed().collect(Collectors.toCollection(ArrayList::new));
+		tournamentService.createTournament("New tournament", teamInfoIds, 4);
 
 	}
 }
