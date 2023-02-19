@@ -2,7 +2,6 @@ package com.meritis.gamesmanager.service;
 
 import com.meritis.gamesmanager.model.Game;
 import com.meritis.gamesmanager.repository.GameRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -12,10 +11,14 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class GameService {
     private final GameRepository gameRepository;
     private final ResultsService resultsService;
+
+    public GameService (GameRepository gameRepository, ResultsService resultsService) {
+        this.gameRepository = gameRepository;
+        this.resultsService = resultsService;
+    }
 
     private static final List<Integer> goalsDistribution = Arrays.asList(0,0,0,0,1,1,1,1,1,2,2,2,2,3,3,3,4,4,5);
 

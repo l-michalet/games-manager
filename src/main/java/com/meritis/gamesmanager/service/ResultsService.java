@@ -3,16 +3,18 @@ package com.meritis.gamesmanager.service;
 import com.meritis.gamesmanager.model.Game;
 import com.meritis.gamesmanager.model.Results;
 import com.meritis.gamesmanager.repository.ResultsRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ResultsService {
     private final ResultsRepository resultsRepository;
+
+    public ResultsService(ResultsRepository resultsRepository) {
+        this.resultsRepository = resultsRepository;
+    }
 
     public void updateResults(Game game) {
         this.updateTeamResults(game.getHomeTeamId(), game.getHomeGoals(), game.getAwayGoals());
@@ -42,7 +44,7 @@ public class ResultsService {
     }
 
     public List<Results> getGroupResults(List<Integer> teamIds) {
-        List<Results> groupResults = resultsRepository.findAllById(teamIds);
+        List<Results> groupResults = resultsRepository.findAllByIds(teamIds);
         groupResults.sort(Results::compareTo);
         return groupResults;
     }

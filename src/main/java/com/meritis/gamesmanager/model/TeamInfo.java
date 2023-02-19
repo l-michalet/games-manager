@@ -1,39 +1,57 @@
 package com.meritis.gamesmanager.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-@Entity
-@Table
-@Data
-@NoArgsConstructor
 public class TeamInfo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_info_seq")
-    @SequenceGenerator(name = "team_info_seq", sequenceName = "team_info_id_seq", allocationSize = 1)
-    @Column
     private int id;
-
-    @Column
     private String shortName;
-    @Column
     private String fullName;
-    @Column
     private int fifaRank;
-    @Column
     private int shape;
 
     public TeamInfo(String shortName, String fullName, int shape) {
         this.shortName = shortName;
         this.fullName = fullName;
+        this.shape = shape;
+    }
+
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public int getFifaRank() {
+        return fifaRank;
+    }
+
+    public void setFifaRank(int fifaRank) {
+        this.fifaRank = fifaRank;
+    }
+
+    public int getShape() {
+        return shape;
+    }
+
+    public void setShape(int shape) {
         this.shape = shape;
     }
 }

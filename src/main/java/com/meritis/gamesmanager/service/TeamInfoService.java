@@ -2,7 +2,6 @@ package com.meritis.gamesmanager.service;
 
 import com.meritis.gamesmanager.model.TeamInfo;
 import com.meritis.gamesmanager.repository.TeamInfoRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,9 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class TeamInfoService {
     private final TeamInfoRepository teamInfoRepository;
+
+    public TeamInfoService(TeamInfoRepository teamInfoRepository) {
+        this.teamInfoRepository = teamInfoRepository;
+    }
 
     public List<TeamInfo> getAllTeamInfos() {
         return teamInfoRepository.findAll();

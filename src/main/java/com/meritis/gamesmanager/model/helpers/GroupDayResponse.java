@@ -1,16 +1,31 @@
 package com.meritis.gamesmanager.model.helpers;
 
 import com.meritis.gamesmanager.model.Game;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class GroupDayResponse {
-    int day;
-    List<Game> games;
+    public int day;
+    public List<Game> games;
+
+    public GroupDayResponse(int day, List<Game> games) {
+        this.day = day;
+        this.games = games;
+    }
+
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
 }

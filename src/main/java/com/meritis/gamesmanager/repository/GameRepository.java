@@ -1,10 +1,14 @@
 package com.meritis.gamesmanager.repository;
 
 import com.meritis.gamesmanager.model.Game;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface GameRepository extends JpaRepository<Game, Integer> {
+import java.util.List;
 
+@Repository
+public interface GameRepository {
+
+    void save(Game game);
+
+    List<Game> findAll();
 }

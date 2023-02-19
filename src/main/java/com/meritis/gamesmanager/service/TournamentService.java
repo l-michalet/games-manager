@@ -2,16 +2,19 @@ package com.meritis.gamesmanager.service;
 
 import com.meritis.gamesmanager.model.Tournament;
 import com.meritis.gamesmanager.repository.TournamentRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class TournamentService {
     private final GroupService groupService;
     private final TournamentRepository tournamentRepository;
+
+    public TournamentService(GroupService groupService, TournamentRepository tournamentRepository) {
+        this.groupService = groupService;
+        this.tournamentRepository = tournamentRepository;
+    }
 
     public void createTournament(String name, List<Integer> teamInfoIds, int nbOfGroups) {
         if (teamInfoIds == null) {

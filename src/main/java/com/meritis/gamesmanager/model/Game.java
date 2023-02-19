@@ -1,36 +1,13 @@
 package com.meritis.gamesmanager.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Game {
-    @Id
-    @Column
-    @GeneratedValue
     private int id;
-    @Column
     private int homeTeamId;
-    @Column
     private int awayTeamId;
-    @Column
     private String groupName;
-    @Column
     private int groupDay;
-    @Column
     private int homeGoals = 0;
-    @Column
     private int awayGoals = 0;
 
     public Game(int homeTeamId, int awayTeamId, String groupName, int groupDay) {
@@ -43,5 +20,63 @@ public class Game {
     public Game(int homeTeamId, int awayTeamId) {
         this.homeTeamId = homeTeamId;
         this.awayTeamId = awayTeamId;
+    }
+
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getHomeTeamId() {
+        return homeTeamId;
+    }
+
+    public void setHomeTeamId(int homeTeamId) {
+        this.homeTeamId = homeTeamId;
+    }
+
+    public int getAwayTeamId() {
+        return awayTeamId;
+    }
+
+    public void setAwayTeamId(int awayTeamId) {
+        this.awayTeamId = awayTeamId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public int getGroupDay() {
+        return groupDay;
+    }
+
+    public void setGroupDay(int groupDay) {
+        this.groupDay = groupDay;
+    }
+
+    public int getHomeGoals() {
+        return homeGoals;
+    }
+
+    public void setHomeGoals(int homeGoals) {
+        this.homeGoals = homeGoals;
+    }
+
+    public int getAwayGoals() {
+        return awayGoals;
+    }
+
+    public void setAwayGoals(int awayGoals) {
+        this.awayGoals = awayGoals;
     }
 }

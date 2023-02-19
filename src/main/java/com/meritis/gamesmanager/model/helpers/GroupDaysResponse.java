@@ -1,15 +1,29 @@
 package com.meritis.gamesmanager.model.helpers;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class GroupDaysResponse {
-    String groupName;
-    List<GroupDayResponse> groupDayResponses;
+    public String groupName;
+    public List<GroupDayResponse> groupDayResponses;
+
+    public GroupDaysResponse(String groupName, List<GroupDayResponse> groupDayResponses) {
+        this.groupName = groupName;
+        this.groupDayResponses = groupDayResponses;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public List<GroupDayResponse> getGroupDayResponses() {
+        return groupDayResponses;
+    }
+
+    public void setGroupDayResponses(List<GroupDayResponse> groupDayResponses) {
+        this.groupDayResponses = groupDayResponses;
+    }
 }

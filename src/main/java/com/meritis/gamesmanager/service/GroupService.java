@@ -7,7 +7,6 @@ import com.meritis.gamesmanager.model.helpers.GroupResponse;
 import com.meritis.gamesmanager.model.helpers.GroupDayResponse;
 import com.meritis.gamesmanager.model.helpers.GroupDaysResponse;
 import com.meritis.gamesmanager.model.Results;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class GroupService {
     private final GameService gameService;
     private final TeamService teamService;
@@ -27,6 +25,12 @@ public class GroupService {
     private static final Integer BREAK = -1;
     private static final int FIRST_ASCII_CHARACTER = 65;
 
+    public GroupService(GameService gameService, TeamService teamService, TeamInfoService teamInfoService, ResultsService resultsService) {
+        this.gameService = gameService;
+        this.teamService = teamService;
+        this.teamInfoService = teamInfoService;
+        this.resultsService = resultsService;
+    }
 
     public void prepareGroups(int tournamentId, List<Integer> teamInfoIds, int nbOfGroups) {
         this.createGroups(tournamentId, teamInfoIds, nbOfGroups);
