@@ -12,6 +12,15 @@ public class Team {
         this.groupName = groupName;
     }
 
+    public Team(int id, int teamInfoId, int tournamentId, String groupName) {
+        this.id = id;
+        this.teamInfoId = teamInfoId;
+        this.tournamentId = tournamentId;
+        this.groupName = groupName;
+    }
+
+    // Getters and Setters
+
     public int getId() {
         return id;
     }

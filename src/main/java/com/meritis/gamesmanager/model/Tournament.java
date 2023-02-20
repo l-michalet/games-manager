@@ -9,6 +9,7 @@ public class Tournament {
         this.name = name;
     }
 
+    // Getters and Setters
 
     public int getId() {
         return id;

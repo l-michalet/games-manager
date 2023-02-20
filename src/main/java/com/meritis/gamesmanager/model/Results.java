@@ -2,7 +2,6 @@ package com.meritis.gamesmanager.model;
 
 public class Results implements Comparable<Results> {
     private int teamId;
-
     private int gamesPlayed = 0;
     private int wins = 0;
     private int draws = 0;
@@ -59,12 +58,10 @@ public class Results implements Comparable<Results> {
                 + " | " + goalsFor + " | " + goalsAgainst + " | " + goalsDiff + " || " + points+ " |";
     }
 
+    // Getters and Setters
+
     public int getTeamId() {
         return teamId;
-    }
-
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
     }
 
     public int getGamesPlayed() {

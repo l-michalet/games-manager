@@ -13,7 +13,15 @@ public class TeamInfo {
         this.shape = shape;
     }
 
+    public TeamInfo(int id, String shortName, String fullName, int fifaRank, int shape) {
+        this.id = id;
+        this.shortName = shortName;
+        this.fullName = fullName;
+        this.fifaRank = fifaRank;
+        this.shape = shape;
+    }
 
+    // Getters and Setters
 
     public int getId() {
         return id;

@@ -22,7 +22,17 @@ public class Game {
         this.awayTeamId = awayTeamId;
     }
 
+    public Game(int id, int homeTeamId, int awayTeamId, String groupName, int groupDay, int homeGoals, int awayGoals) {
+        this.id = id;
+        this.homeTeamId = homeTeamId;
+        this.awayTeamId = awayTeamId;
+        this.groupName = groupName;
+        this.groupDay = groupDay;
+        this.homeGoals = homeGoals;
+        this.awayGoals = awayGoals;
+    }
 
+    // Getters and Setters
 
     public int getId() {
         return id;

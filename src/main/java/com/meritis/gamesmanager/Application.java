@@ -1,8 +1,10 @@
 package com.meritis.gamesmanager;
 
+import com.meritis.gamesmanager.configuration.DatabaseManager;
 import com.meritis.gamesmanager.service.TournamentService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @SpringBootApplication
+@EnableConfigurationProperties(DatabaseManager.class)
 public class Application {
 
 	public static void main(String[] args) {
