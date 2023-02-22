@@ -71,8 +71,7 @@ public class TeamInfoRepositoryImpl implements TeamInfoRepository {
     @Override
     public Optional<TeamInfo> findById(Integer id) {
         try (Connection connection = databaseManager.getConnection()){
-            String sql = "SELECT * FROM team_infos WHERE id = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM team_infos WHERE id = ?");
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
             TeamInfo teamInfo = null;
@@ -93,8 +92,7 @@ public class TeamInfoRepositoryImpl implements TeamInfoRepository {
     public List<TeamInfo> findAll() {
         List<TeamInfo> teamInfos = new ArrayList<>();
         try (Connection connection = databaseManager.getConnection()) {
-            String sql = "SELECT * FROM team_infos";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM team_infos");
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 int id = result.getInt("id");
@@ -114,8 +112,7 @@ public class TeamInfoRepositoryImpl implements TeamInfoRepository {
     public Set<String> findAllShortNames() {
         Set<String> shortNames = new HashSet<>();
         try (Connection connection = databaseManager.getConnection()){
-            String sql = "SELECT short_name FROM team_infos";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement("SELECT short_name FROM team_infos");
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 String shortName = result.getString("short_name");

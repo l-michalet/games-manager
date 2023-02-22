@@ -36,7 +36,7 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public void saveAll(List<Team> teams) {
         try (Connection connection = databaseManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO teams (team_info_id, tournament_id, group_name) VALUES (?, ?, ?)")) {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO teams (team_info_id, tournament_id, group_name) VALUES (?, ?, ?)")) {
             for (Team team : teams) {
                 statement.setInt(1, team.getTeamInfoId());
                 statement.setInt(2, team.getTournamentId());
@@ -54,7 +54,7 @@ public class TeamRepositoryImpl implements TeamRepository {
         List<Team> teams = new ArrayList<>();
 
         try (Connection connection = databaseManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM teams")) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM teams")) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
@@ -74,7 +74,7 @@ public class TeamRepositoryImpl implements TeamRepository {
         List<Team> teams = new ArrayList<>();
 
         try (Connection connection = databaseManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM teams WHERE tournament_id = ?")) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM teams WHERE tournament_id = ?")) {
             statement.setInt(1, tournamentId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

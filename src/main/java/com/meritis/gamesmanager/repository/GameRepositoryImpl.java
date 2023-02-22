@@ -24,7 +24,7 @@ public class GameRepositoryImpl implements GameRepository {
     @Override
     public void save(Game game) {
         try (Connection connection = databaseManager.getConnection();
-             PreparedStatement ps = connection.prepareStatement("INSERT INTO games (home_team_id, away_team_id, group_name, group_day) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO games (home_team_id, away_team_id, group_name, group_day) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, game.getHomeTeamId());
             ps.setInt(2, game.getAwayTeamId());
             ps.setString(3, game.getGroupName());
@@ -43,7 +43,7 @@ public class GameRepositoryImpl implements GameRepository {
     @Override
     public List<Game> findAll() {
         try (Connection connection = databaseManager.getConnection();
-             PreparedStatement ps = connection.prepareStatement("SELECT * FROM games")) {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM games")) {
             ResultSet rs = ps.executeQuery();
             List<Game> games = new ArrayList<>();
             while (rs.next()) {

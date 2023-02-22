@@ -25,7 +25,7 @@ public class ResultsRepositoryImpl implements ResultsRepository {
     @Override
     public void save(Results results) {
         try (Connection connection = dataManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO results (team_id, games_played, wins, draws, losses, points, goals_for, goals_against, goals_diff) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO results (team_id, games_played, wins, draws, losses, points, goals_for, goals_against, goals_diff) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
             statement.setInt(1, results.getTeamId());
             statement.setInt(2, results.getGamesPlayed());
             statement.setInt(3, results.getWins());
@@ -44,7 +44,7 @@ public class ResultsRepositoryImpl implements ResultsRepository {
     @Override
     public Optional<Results> findById(int id) {
         try (Connection connection = dataManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM results WHERE id = ?")) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM results WHERE id = ?")) {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -63,7 +63,7 @@ public class ResultsRepositoryImpl implements ResultsRepository {
             return Collections.emptyList();
         }
         try (Connection connection = dataManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM results WHERE id IN (" + String.join(",", Collections.nCopies(ids.size(), "?")) + ")")) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM results WHERE id IN (" + String.join(",", Collections.nCopies(ids.size(), "?")) + ")")) {
             for (int i = 0; i < ids.size(); i++) {
                 statement.setInt(i + 1, ids.get(i));
             }

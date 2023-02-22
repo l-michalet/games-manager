@@ -19,7 +19,7 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     @Override
     public void save(Tournament tournament) {
         try (Connection connection = databaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO tournaments(name) VALUES(?)")) {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO tournaments(name) VALUES(?)")) {
             preparedStatement.setString(1, tournament.getName());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
