@@ -4,6 +4,7 @@ import com.meritis.gamesmanager.model.Team;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TeamRepository {
@@ -12,4 +13,6 @@ public interface TeamRepository {
     void saveAll(List<Team> teams);
     List<Team> findAll();
     List<Team> findAllByTournamentId(int tournamentId);
+
+    Optional<Team> findByTournamentIdAndTeamInfoId(int tournamentId, int teamInfoId);
 }

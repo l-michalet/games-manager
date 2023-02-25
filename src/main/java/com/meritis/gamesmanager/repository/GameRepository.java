@@ -9,6 +9,8 @@ import java.util.List;
 public interface GameRepository {
 
     void save(Game game);
-
+    List<Game> findAllByGroupNameAndGroupDay(String groupName, Integer groupDay);
+    List<Game> findAllByGroupName(String groupName);
+    List<Game> findAllByGroupDay(Integer groupDay);
     List<Game> findAll();
 }

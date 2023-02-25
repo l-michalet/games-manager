@@ -22,6 +22,20 @@ public class GameService {
 
     private static final List<Integer> goalsDistribution = Arrays.asList(0,0,0,0,1,1,1,1,1,2,2,2,2,3,3,3,4,4,5);
 
+    public List<Game> listGames(String groupName, Integer groupDay) {
+        List<Game> games;
+        if (groupName != null && groupDay != null) {
+            games = gameRepository.findAllByGroupNameAndGroupDay(groupName,groupDay);
+        } else if(groupName != null) {
+            games = gameRepository.findAllByGroupName(groupName);
+        } else if(groupDay != null) {
+            games = gameRepository.findAllByGroupDay(groupDay);
+        } else {
+            games = gameRepository.findAll();
+        }
+        return games;
+    }
+
     public void scheduleGame(int home, int away, String group, int day) {
         System.out.println(home + " vs. "+ away);
 

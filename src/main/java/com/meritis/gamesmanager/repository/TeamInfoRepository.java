@@ -15,6 +15,8 @@ public interface TeamInfoRepository {
 
     Optional<TeamInfo> findById(Integer teamInfoId);
 
+    Optional<TeamInfo> findByShortName(String shortName);
+
     List<TeamInfo> findAll();
 
     Set<String> findAllShortNames();

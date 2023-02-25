@@ -11,7 +11,7 @@ public interface ResultsRepository {
 
     void save(Results results);
 
-    Optional<Results> findById(int id);
+    Optional<Results> findByTeamId(int teamId);
 
     List<Results> findAllByIds(List<Integer> ids);
 }
