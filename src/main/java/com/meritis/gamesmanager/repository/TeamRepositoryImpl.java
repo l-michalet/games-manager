@@ -1,92 +1,64 @@
 package com.meritis.gamesmanager.repository;
 
 import com.meritis.gamesmanager.model.Team;
-import com.meritis.gamesmanager.configuration.DatabaseManager;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class TeamRepositoryImpl implements TeamRepository {
 
-    private final DatabaseManager databaseManager;
+    private final JdbcTemplate jdbcTemplate;
 
-    public TeamRepositoryImpl(DatabaseManager databaseManager) {
-        this.databaseManager = databaseManager;
+    public TeamRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public void save(Team team) {
-        try (Connection connection = databaseManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO teams (team_info_id, tournament_id, group_name) VALUES (?, ?, ?)")) {
-            statement.setInt(1, team.getTeamInfoId());
-            statement.setInt(2, team.getTournamentId());
-            statement.setString(3, team.getGroupName());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error saving team ", e);
+        int affectedRows = jdbcTemplate.update("INSERT INTO teams (team_info_id, tournament_id, group_name) VALUES (?, ?, ?)",
+                team.getTeamInfoId(),
+                team.getTournamentId(),
+                team.getGroupName());
+        if (affectedRows != 1) {
+            throw new RuntimeException("Error saving team");
         }
     }
 
     @Override
     public void saveAll(List<Team> teams) {
-        try (Connection connection = databaseManager.getConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO teams (team_info_id, tournament_id, group_name) VALUES (?, ?, ?)")) {
-            for (Team team : teams) {
-                statement.setInt(1, team.getTeamInfoId());
-                statement.setInt(2, team.getTournamentId());
-                statement.setString(3, team.getGroupName());
-                statement.addBatch();
-            }
-            statement.executeBatch();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error saving all teams ", e);
-        }
+        jdbcTemplate.batchUpdate("INSERT INTO teams (team_info_id, tournament_id, group_name) VALUES (?, ?, ?)",
+            teams, teams.size(),
+            (ps, team) -> {
+                ps.setInt(1, team.getTeamInfoId());
+                ps.setInt(2, team.getTournamentId());
+                ps.setString(3, team.getGroupName());
+            });
     }
 
     @Override
     public List<Team> findAll() {
-        List<Team> teams = new ArrayList<>();
-
-        try (Connection connection = databaseManager.getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM teams")) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                int teamInfoId = resultSet.getInt("team_info_id");
-                int tournamentId = resultSet.getInt("tournament_id");
-                String groupName = resultSet.getString("group_name");
-                teams.add(new Team(id, teamInfoId, tournamentId, groupName));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting all teams ", e);
-        }
-        return teams;
+        return jdbcTemplate.query("SELECT * FROM teams", new TeamRowMapper());
     }
 
     @Override
     public List<Team> findAllByTournamentId(int tournamentId) {
-        List<Team> teams = new ArrayList<>();
+        return jdbcTemplate.query("SELECT * FROM teams WHERE tournament_id = ?", new TeamRowMapper(), tournamentId);
+    }
 
-        try (Connection connection = databaseManager.getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM teams WHERE tournament_id = ?")) {
-            statement.setInt(1, tournamentId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                int teamInfoId = resultSet.getInt("team_info_id");
-                String groupName = resultSet.getString("group_name");
-                teams.add(new Team(id, teamInfoId, tournamentId, groupName));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting all teams by tournamentId", e);
+    private static class TeamRowMapper implements RowMapper<Team> {
+
+        @Override
+        public Team mapRow(ResultSet rs, int rowNum) throws SQLException {
+            int id = rs.getInt("id");
+            int teamInfoId = rs.getInt("team_info_id");
+            int tournamentId = rs.getInt("tournament_id");
+            String groupName = rs.getString("group_name");
+            return new Team(id, teamInfoId, tournamentId, groupName);
         }
-
-        return teams;
     }
 }

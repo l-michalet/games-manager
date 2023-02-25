@@ -1,6 +1,9 @@
 package com.meritis.gamesmanager.model;
 
+import nonapi.io.github.classgraph.json.Id;
+
 public class TeamInfo {
+    @Id
     private int id;
     private String shortName;
     private String fullName;
@@ -13,13 +16,7 @@ public class TeamInfo {
         this.shape = shape;
     }
 
-    public TeamInfo(int id, String shortName, String fullName, int fifaRank, int shape) {
-        this.id = id;
-        this.shortName = shortName;
-        this.fullName = fullName;
-        this.fifaRank = fifaRank;
-        this.shape = shape;
-    }
+    public TeamInfo() {}
 
     // Getters and Setters
 
