@@ -4,6 +4,7 @@ import com.meritis.gamesmanager.model.TeamInfo;
 import com.meritis.gamesmanager.model.helpers.TeamRequest;
 import com.meritis.gamesmanager.repository.TeamInfoRepository;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,17 +28,16 @@ public class TeamInfoApi {
     }
 
     @GetMapping("/team")
-    public ResponseEntity<TeamInfo> findTeamInfo(@RequestParam("shortName") int teamInfoId) {
-        System.out.format("[TeamInfoApi] findTeam shortName=%s", teamInfoId);
-        Optional<TeamInfo> optionalTeam = teamInfoRepository.findById(teamInfoId);
-        if (optionalTeam.isEmpty()) {
-            throw new RuntimeException();
-        }
-        return new ResponseEntity<>(optionalTeam.get(), HttpStatus.OK);
+    public ResponseEntity<TeamInfo> findTeamInfo(@RequestParam("shortName") String shortName) {
+        System.out.format("TeamInfoApi | findTeamInfo shortName=%s", shortName);
+        TeamInfo teamInfo = teamInfoRepository.findByShortName(shortName)
+                .orElseThrow(RuntimeException::new);
+        return new ResponseEntity<>(teamInfo, HttpStatus.OK);
     }
 
     @PostMapping("/team")
-    public ResponseEntity saveTeamInfo(@RequestBody TeamRequest teamRequest) {
+    public ResponseEntity<Void> saveTeamInfo(@RequestBody TeamRequest teamRequest) {
+        System.out.format("TeamInfoApi | saveTeamInfo shortName=%s", teamRequest.getShortName());
         Set<String> takenShortNames = teamInfoRepository.findAllShortNames();
         if (takenShortNames.contains(teamRequest.getShortName())) {
             throw new RuntimeException();
@@ -46,15 +46,13 @@ public class TeamInfoApi {
             throw new RuntimeException();
         }
         teamInfoRepository.save(new TeamInfo(teamRequest.getShortName(), teamRequest.getFullName(), teamRequest.getShape()));
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/teams")
-    public ResponseEntity<List<TeamInfo>> listTeamInfos(@RequestParam("groupName") Optional<String> groupName) {
-        System.out.format("[TeamInfoApi] listTeams groupName=%s", groupName);
-
-        return groupName.map(s -> new ResponseEntity<>(teamInfoRepository.findAll(), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(teamInfoRepository.findAll(), HttpStatus.OK));
+    public ResponseEntity<List<TeamInfo>> listTeamInfos(@Param("groupName") String groupName) {
+        System.out.format("TeamInfoApi | listTeamInfos groupName=%s", groupName);
+        return new ResponseEntity<>(teamInfoRepository.findAll(), HttpStatus.OK); //TODO: by groupName
     }
 
     // TODO: Bulk request

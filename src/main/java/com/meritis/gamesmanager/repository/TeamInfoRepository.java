@@ -14,6 +14,8 @@ public interface TeamInfoRepository extends JpaRepository<TeamInfo, Integer> {
 
     Optional<TeamInfo> findById(Integer teamInfoId);
 
+    Optional<TeamInfo> findByShortName(String shortName);
+
     List<TeamInfo> findAll();
 
     @Query("SELECT t.shortName FROM TeamInfo t")

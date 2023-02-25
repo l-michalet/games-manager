@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class TeamInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_info_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "team_info_seq", sequenceName = "team_info_id_seq", allocationSize = 1)
     @Column
     private int id;

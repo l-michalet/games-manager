@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -17,8 +16,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class Team {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
-    @SequenceGenerator(name = "team_seq", sequenceName = "team_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private int id;
 
