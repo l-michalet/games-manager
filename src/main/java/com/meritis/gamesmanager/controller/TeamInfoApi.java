@@ -4,7 +4,6 @@ import com.meritis.gamesmanager.model.TeamInfo;
 import com.meritis.gamesmanager.model.helpers.TeamRequest;
 import com.meritis.gamesmanager.repository.TeamInfoRepository;
 
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -50,7 +48,7 @@ public class TeamInfoApi {
     }
 
     @GetMapping("/teams")
-    public ResponseEntity<List<TeamInfo>> listTeamInfos(@Param("groupName") String groupName) {
+    public ResponseEntity<List<TeamInfo>> listTeamInfos(@RequestParam("groupName") String groupName) {
         System.out.format("TeamInfoApi | listTeamInfos groupName=%s", groupName);
         return new ResponseEntity<>(teamInfoRepository.findAll(), HttpStatus.OK); //TODO: by groupName
     }

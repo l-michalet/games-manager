@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TeamRepositoryImpl implements TeamRepository {
@@ -23,7 +24,7 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public void save(Team team) {
         try (Connection connection = databaseManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO teams (team_info_id, tournament_id, group_name) VALUES (?, ?, ?)")) {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO teams (team_info_id, tournament_id, group_name) VALUES (?, ?, ?)")) {
             statement.setInt(1, team.getTeamInfoId());
             statement.setInt(2, team.getTournamentId());
             statement.setString(3, team.getGroupName());
@@ -88,5 +89,10 @@ public class TeamRepositoryImpl implements TeamRepository {
         }
 
         return teams;
+    }
+
+    @Override
+    public Optional<Team> findByTournamentIdAndTeamInfoId(int tournamentId, int teamInfoId) {
+        return Optional.empty();
     }
 }

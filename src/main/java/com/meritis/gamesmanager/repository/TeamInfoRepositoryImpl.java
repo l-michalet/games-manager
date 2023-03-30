@@ -89,6 +89,11 @@ public class TeamInfoRepositoryImpl implements TeamInfoRepository {
     }
 
     @Override
+    public Optional<TeamInfo> findByShortName(String shortName) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<TeamInfo> findAll() {
         List<TeamInfo> teamInfos = new ArrayList<>();
         try (Connection connection = databaseManager.getConnection()) {

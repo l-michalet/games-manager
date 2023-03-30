@@ -42,6 +42,11 @@ public class ResultsRepositoryImpl implements ResultsRepository {
     }
 
     @Override
+    public Optional<Results> findByTeamId(String teamId) {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Results> findById(int id) {
         try (Connection connection = dataManager.getConnection();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM results WHERE id = ?")) {
@@ -76,6 +81,11 @@ public class ResultsRepositoryImpl implements ResultsRepository {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to find results by ids", e);
         }
+    }
+
+    @Override
+    public List<Results> findAll() {
+        return null;
     }
 
     private Results mapResults(ResultSet rs) throws SQLException {

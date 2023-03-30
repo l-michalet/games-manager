@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TournamentRepositoryImpl implements TournamentRepository {
@@ -25,5 +27,15 @@ public class TournamentRepositoryImpl implements TournamentRepository {
         } catch (SQLException e) {
             throw new RuntimeException("Error saving tournament", e);
         }
+    }
+
+    @Override
+    public Optional<Tournament> findById(Integer tournamentId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Tournament> findAll() {
+        return null;
     }
 }

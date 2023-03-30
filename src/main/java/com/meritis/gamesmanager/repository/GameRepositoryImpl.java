@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class GameRepositoryImpl implements GameRepository {
@@ -41,6 +42,21 @@ public class GameRepositoryImpl implements GameRepository {
     }
 
     @Override
+    public List<Game> findAllByGroupNameAndGroupDay(String groupName, Integer groupDay) {
+        return null;
+    }
+
+    @Override
+    public List<Game> findAllByGroupName(String groupName) {
+        return null;
+    }
+
+    @Override
+    public List<Game> findAllByGroupDay(Integer groupDay) {
+        return null;
+    }
+
+    @Override
     public List<Game> findAll() {
         try (Connection connection = databaseManager.getConnection();
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM games")) {
@@ -60,6 +76,11 @@ public class GameRepositoryImpl implements GameRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Optional<Game> findById(Integer id) {
+        return null;
     }
 }
 
