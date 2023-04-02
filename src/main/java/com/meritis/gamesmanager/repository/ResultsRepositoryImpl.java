@@ -43,7 +43,18 @@ public class ResultsRepositoryImpl implements ResultsRepository {
 
     @Override
     public Optional<Results> findByTeamId(String teamId) {
-        return Optional.empty();
+        try (Connection connection = dataManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM results WHERE team_id = ?")) {
+            statement.setString(1, teamId);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return Optional.of(mapResults(rs));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find results by teamId", e);
+        }
     }
 
     @Override
@@ -85,7 +96,17 @@ public class ResultsRepositoryImpl implements ResultsRepository {
 
     @Override
     public List<Results> findAll() {
-        return null;
+        try (Connection connection = dataManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM results")) {
+            ResultSet rs = statement.executeQuery();
+            List<Results> results = new ArrayList<>();
+            while (rs.next()) {
+                results.add(mapResults(rs));
+            }
+            return results;
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find results", e);
+        }
     }
 
     private Results mapResults(ResultSet rs) throws SQLException {

@@ -8,6 +8,10 @@ public class Tournament {
     public Tournament(String name) {
         this.name = name;
     }
+    public Tournament(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     // Getters and Setters
 

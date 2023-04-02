@@ -90,7 +90,22 @@ public class TeamInfoRepositoryImpl implements TeamInfoRepository {
 
     @Override
     public Optional<TeamInfo> findByShortName(String shortName) {
-        return Optional.empty();
+        try (Connection connection = databaseManager.getConnection()){
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM team_infos WHERE shortName = ?");
+            statement.setString(1, shortName);
+            ResultSet result = statement.executeQuery();
+            TeamInfo teamInfo = null;
+            if (result.next()) {
+                int id = result.getInt("id");
+                String fullName = result.getString("full_name");
+                int fifaRank = result.getInt("fifa_rank");
+                int shape = result.getInt("shape");
+                teamInfo = new TeamInfo(id, shortName, fullName, fifaRank, shape);
+            }
+            return Optional.ofNullable(teamInfo);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding teamInfo", e);
+        }
     }
 
     @Override
