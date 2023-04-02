@@ -91,7 +91,7 @@ public class TeamInfoRepositoryImpl implements TeamInfoRepository {
     @Override
     public Optional<TeamInfo> findByShortName(String shortName) {
         try (Connection connection = databaseManager.getConnection()){
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM team_infos WHERE shortName = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM team_infos WHERE short_name = ?");
             statement.setString(1, shortName);
             ResultSet result = statement.executeQuery();
             TeamInfo teamInfo = null;

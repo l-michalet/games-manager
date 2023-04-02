@@ -4,6 +4,9 @@ import com.meritis.gamesmanager.model.TeamInfo;
 import com.meritis.gamesmanager.model.helpers.TeamRequest;
 import com.meritis.gamesmanager.repository.TeamInfoRepository;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,6 +29,12 @@ public class TeamInfoApi {
     }
 
     @GetMapping("/team")
+    @ApiOperation(value = "Find the general infos of a team", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved the team infos"),
+            @ApiResponse(code = 404, message = "Team not found"),
+            @ApiResponse(code = 500, message = "Internal server error")
+    })
     public ResponseEntity<TeamInfo> findTeamInfo(@RequestParam("shortName") String shortName) {
         System.out.format("TeamInfoApi | findTeamInfo shortName=%s", shortName);
         TeamInfo teamInfo = teamInfoRepository.findByShortName(shortName)
@@ -34,6 +43,11 @@ public class TeamInfoApi {
     }
 
     @PostMapping("/team")
+    @ApiOperation(value = "Save a new team", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved saved the team infos"),
+            @ApiResponse(code = 500, message = "Internal server error")
+    })
     public ResponseEntity<Void> saveTeamInfo(@RequestBody TeamRequest teamRequest) {
         System.out.format("TeamInfoApi | saveTeamInfo shortName=%s", teamRequest.getShortName());
         Set<String> takenShortNames = teamInfoRepository.findAllShortNames();
@@ -48,7 +62,13 @@ public class TeamInfoApi {
     }
 
     @GetMapping("/teams")
-    public ResponseEntity<List<TeamInfo>> listTeamInfos(@RequestParam("groupName") String groupName) {
+    @ApiOperation(value = "List all team infos", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved saved the team infos"),
+            @ApiResponse(code = 404, message = "Group not found"),
+            @ApiResponse(code = 500, message = "Internal server error")
+    })
+    public ResponseEntity<List<TeamInfo>> listTeamInfos(@RequestParam(required = false) String groupName) {
         System.out.format("TeamInfoApi | listTeamInfos groupName=%s", groupName);
         return new ResponseEntity<>(teamInfoRepository.findAll(), HttpStatus.OK); //TODO: by groupName
     }
