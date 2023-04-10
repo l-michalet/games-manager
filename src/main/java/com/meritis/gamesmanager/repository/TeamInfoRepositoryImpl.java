@@ -4,8 +4,12 @@ import com.meritis.gamesmanager.model.TeamInfo;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -23,27 +27,26 @@ public class TeamInfoRepositoryImpl implements TeamInfoRepository {
 
     @Override
     public void save(TeamInfo teamInfo) {
-        int affectedRows;
-        if (teamInfo.getId() == 0) { // new team
-            affectedRows = jdbcTemplate.update("INSERT INTO team_infos (short_name, full_name, fifa_rank, shape) VALUES (?, ?, ?, ?)",
-                    teamInfo.getShortName(),
-                    teamInfo.getFullName(),
-                    teamInfo.getFifaRank(),
-                    teamInfo.getShape(),
-                    teamInfo.getId(),
-                    new GeneratedKeyHolder());
-        } else { // existing team, update
-            affectedRows = jdbcTemplate.update("UPDATE team_infos SET short_name = ?, full_name = ?, fifa_rank = ?, shape = ? WHERE id = ?",
-                teamInfo.getShortName(),
-                teamInfo.getFullName(),
-                teamInfo.getFifaRank(),
-                teamInfo.getShape(),
-                teamInfo.getId());
-        }
-        if (affectedRows == 0) {
-            throw new RuntimeException("Updating team failed, no rows affected.");
-        }
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO team_infos (short_name, full_name, fifa_rank, shape) VALUES(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, teamInfo.getShortName());
+            ps.setString(2, teamInfo.getFullName());
+            if (teamInfo.getFifaRank() == null) {
+                ps.setNull(3, Types.INTEGER);
+            } else {
+                ps.setInt(3, teamInfo.getFifaRank());
+            }
+            if (teamInfo.getShape() == null) {
+                ps.setNull(4, Types.INTEGER);
+            } else {
+                ps.setInt(4, teamInfo.getShape());
+            }
+            return ps;
+        }, keyHolder);
+        teamInfo.setId(keyHolder.getKey().intValue());
     }
+
 
     @Override
     public void saveAll(List<TeamInfo> teamInfos) {
@@ -60,6 +63,12 @@ public class TeamInfoRepositoryImpl implements TeamInfoRepository {
     @Override
     public Optional<TeamInfo> findById(Integer id) {
         List<TeamInfo> teamInfos = jdbcTemplate.query("SELECT * FROM team_infos WHERE id = ?", new BeanPropertyRowMapper<>(TeamInfo.class), id);
+        return teamInfos.isEmpty() ? Optional.empty() : Optional.of(teamInfos.get(0));
+    }
+
+    @Override
+    public Optional<TeamInfo> findByShortName(String shortName) {
+        List<TeamInfo> teamInfos = jdbcTemplate.query("SELECT * FROM team_infos WHERE short_name = ?", new BeanPropertyRowMapper<>(TeamInfo.class), shortName);
         return teamInfos.isEmpty() ? Optional.empty() : Optional.of(teamInfos.get(0));
     }
 

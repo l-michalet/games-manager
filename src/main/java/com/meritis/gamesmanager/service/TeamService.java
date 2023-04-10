@@ -25,7 +25,7 @@ public class TeamService {
         return teams;
     }
 
-    public Map<String, List<Integer>> allTeamIdsPerGroup(int tournamentId) {
+    public Map<String, List<Integer>> allTeamIdsPerGroup(Integer tournamentId) {
         return teamRepository.findAllByTournamentId(tournamentId).stream()
                 .filter(t -> t.getGroupName() != null)
                 .collect(Collectors.groupingBy(Team::getGroupName, Collectors.mapping(Team::getTeamInfoId, Collectors.toList())));

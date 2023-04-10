@@ -16,15 +16,14 @@ public class TournamentService {
         this.tournamentRepository = tournamentRepository;
     }
 
-    public void createTournament(String name, List<Integer> teamInfoIds, int nbOfGroups) {
+    public void createTournament(String name, List<Integer> teamInfoIds, Integer nbOfGroups) {
         if (teamInfoIds == null) {
             System.out.println("Error, teamInfoIds is null");
             return;
         }
-        Tournament tournament = new Tournament(name);
+        Tournament tournament = tournamentRepository.save(new Tournament(name));
         System.out.println("**********************************\nGenerate groups:");
         groupService.prepareGroups(tournament.getId(), teamInfoIds, nbOfGroups);
-        tournamentRepository.save(new Tournament(name));
     }
 
 
@@ -34,7 +33,7 @@ public class TournamentService {
         groupService.playGroups();
     }
 
-    public void getGroupResults(int tournamentId) {
+    public void getGroupResults(Integer tournamentId) {
         System.out.println("**********************************\nGroup stages results:");
         groupService.getGroupsResults(tournamentId);
     }

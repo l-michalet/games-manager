@@ -2,16 +2,24 @@ package com.meritis.gamesmanager.model;
 
 public class Tournament {
 
-    private int id;
+    private Integer id;
     private String name;
 
+    public Tournament() {
+
+    }
+
     public Tournament(String name) {
+        this.name = name;
+    }
+    public Tournament(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
     // Getters and Setters
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

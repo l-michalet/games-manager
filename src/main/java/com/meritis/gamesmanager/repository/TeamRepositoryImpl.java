@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TeamRepositoryImpl implements TeamRepository {
@@ -46,8 +47,14 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public List<Team> findAllByTournamentId(int tournamentId) {
+    public List<Team> findAllByTournamentId(Integer tournamentId) {
         return jdbcTemplate.query("SELECT * FROM teams WHERE tournament_id = ?", new TeamRowMapper(), tournamentId);
+    }
+
+    @Override
+    public Optional<Team> findByTournamentIdAndTeamInfoId(Integer tournamentId, Integer teamInfoId) {
+        List<Team> teams = jdbcTemplate.query("SELECT * FROM teams WHERE tournament_id = ? AND team_info_id=?", new TeamRowMapper(), tournamentId, teamInfoId);
+        return teams.isEmpty() ? Optional.empty() : Optional.of(teams.get(0));
     }
 
     private static class TeamRowMapper implements RowMapper<Team> {

@@ -1,18 +1,18 @@
 package com.meritis.gamesmanager.model;
 
 public class Team {
-    private int id;
-    private int teamInfoId;
-    private int tournamentId;
+    private Integer id;
+    private Integer teamInfoId;
+    private Integer tournamentId;
     private String groupName;
 
-    public Team(int teamInfoId, int tournamentId, String groupName) {
+    public Team(Integer teamInfoId, Integer tournamentId, String groupName) {
         this.teamInfoId = teamInfoId;
         this.tournamentId = tournamentId;
         this.groupName = groupName;
     }
 
-    public Team(int id, int teamInfoId, int tournamentId, String groupName) {
+    public Team(Integer id, Integer teamInfoId, Integer tournamentId, String groupName) {
         this.id = id;
         this.teamInfoId = teamInfoId;
         this.tournamentId = tournamentId;
@@ -21,27 +21,27 @@ public class Team {
 
     // Getters and Setters
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getTeamInfoId() {
+    public Integer getTeamInfoId() {
         return teamInfoId;
     }
 
-    public void setTeamInfoId(int teamInfoId) {
+    public void setTeamInfoId(Integer teamInfoId) {
         this.teamInfoId = teamInfoId;
     }
 
-    public int getTournamentId() {
+    public Integer getTournamentId() {
         return tournamentId;
     }
 
-    public void setTournamentId(int tournamentId) {
+    public void setTournamentId(Integer tournamentId) {
         this.tournamentId = tournamentId;
     }
 

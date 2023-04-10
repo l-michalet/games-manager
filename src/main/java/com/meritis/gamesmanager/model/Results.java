@@ -1,26 +1,30 @@
 package com.meritis.gamesmanager.model;
 
 public class Results implements Comparable<Results> {
-    private int teamId;
-    private int gamesPlayed = 0;
-    private int wins = 0;
-    private int draws = 0;
-    private int losses = 0;
-    private int points = 0;
-    private int goalsFor = 0;
-    private int goalsAgainst = 0;
-    private int goalsDiff = 0;
+    private Integer teamId;
+    private Integer gamesPlayed = 0;
+    private Integer wins = 0;
+    private Integer draws = 0;
+    private Integer losses = 0;
+    private Integer points = 0;
+    private Integer goalsFor = 0;
+    private Integer goalsAgainst = 0;
+    private Integer goalsDiff = 0;
 
-    public Results(int teamId) {
+    public Results() {
+
+    }
+
+    public Results(Integer teamId) {
         this.teamId = teamId;
     }
 
-    public void addGoalsFor(int newGoalsFor) {
+    public void addGoalsFor(Integer newGoalsFor) {
         this.goalsFor += newGoalsFor;
         this.goalsDiff += newGoalsFor;
     }
 
-    public void addGoalsAgainst(int newGoalsAgainst) {
+    public void addGoalsAgainst(Integer newGoalsAgainst) {
         this.goalsAgainst += newGoalsAgainst;
         this.goalsDiff -= newGoalsAgainst;
     }
@@ -60,71 +64,71 @@ public class Results implements Comparable<Results> {
 
     // Getters and Setters
 
-    public int getTeamId() {
+    public Integer getTeamId() {
         return teamId;
     }
 
-    public int getGamesPlayed() {
+    public Integer getGamesPlayed() {
         return gamesPlayed;
     }
 
-    public void setGamesPlayed(int gamesPlayed) {
+    public void setGamesPlayed(Integer gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
     }
 
-    public int getWins() {
+    public Integer getWins() {
         return wins;
     }
 
-    public void setWins(int wins) {
+    public void setWins(Integer wins) {
         this.wins = wins;
     }
 
-    public int getDraws() {
+    public Integer getDraws() {
         return draws;
     }
 
-    public void setDraws(int draws) {
+    public void setDraws(Integer draws) {
         this.draws = draws;
     }
 
-    public int getLosses() {
+    public Integer getLosses() {
         return losses;
     }
 
-    public void setLosses(int losses) {
+    public void setLosses(Integer losses) {
         this.losses = losses;
     }
 
-    public int getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(Integer points) {
         this.points = points;
     }
 
-    public int getGoalsFor() {
+    public Integer getGoalsFor() {
         return goalsFor;
     }
 
-    public void setGoalsFor(int goalsFor) {
+    public void setGoalsFor(Integer goalsFor) {
         this.goalsFor = goalsFor;
     }
 
-    public int getGoalsAgainst() {
+    public Integer getGoalsAgainst() {
         return goalsAgainst;
     }
 
-    public void setGoalsAgainst(int goalsAgainst) {
+    public void setGoalsAgainst(Integer goalsAgainst) {
         this.goalsAgainst = goalsAgainst;
     }
 
-    public int getGoalsDiff() {
+    public Integer getGoalsDiff() {
         return goalsDiff;
     }
 
-    public void setGoalsDiff(int goalsDiff) {
+    public void setGoalsDiff(Integer goalsDiff) {
         this.goalsDiff = goalsDiff;
     }
 }

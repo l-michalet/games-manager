@@ -1,13 +1,12 @@
 package com.meritis.gamesmanager.repository;
 
 import com.meritis.gamesmanager.model.Game;
-import com.meritis.gamesmanager.configuration.DatabaseManager;
-import com.meritis.gamesmanager.model.TeamInfo;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class GameRepositoryImpl implements GameRepository {
@@ -31,8 +30,29 @@ public class GameRepositoryImpl implements GameRepository {
     }
 
     @Override
+    public List<Game> findAllByGroupNameAndGroupDay(String groupName, Integer groupDay) {
+        return jdbcTemplate.query("SELECT * FROM games WHERE group_name=? AND group_day=?", new BeanPropertyRowMapper<>(Game.class), groupName, groupDay);
+    }
+
+    @Override
+    public List<Game> findAllByGroupName(String groupName) {
+        return jdbcTemplate.query("SELECT * FROM games WHERE group_name=?", new BeanPropertyRowMapper<>(Game.class), groupName);
+    }
+
+    @Override
+    public List<Game> findAllByGroupDay(Integer groupDay) {
+        return jdbcTemplate.query("SELECT * FROM games WHERE group_day=?", new BeanPropertyRowMapper<>(Game.class), groupDay);
+    }
+
+    @Override
     public List<Game> findAll() {
         return jdbcTemplate.query("SELECT * FROM games", new BeanPropertyRowMapper<>(Game.class));
+    }
+
+    @Override
+    public Optional<Game> findById(Integer id) {
+        List<Game> games = jdbcTemplate.query("SELECT * FROM games WHERE id=?", new BeanPropertyRowMapper<>(Game.class), id);
+        return games.isEmpty() ? Optional.empty() : Optional.of(games.get(0));
     }
 }
 

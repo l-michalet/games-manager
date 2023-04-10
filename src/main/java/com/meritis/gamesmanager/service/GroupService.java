@@ -32,12 +32,12 @@ public class GroupService {
         this.resultsService = resultsService;
     }
 
-    public void prepareGroups(int tournamentId, List<Integer> teamInfoIds, int nbOfGroups) {
+    public void prepareGroups(Integer tournamentId, List<Integer> teamInfoIds, Integer nbOfGroups) {
         this.createGroups(tournamentId, teamInfoIds, nbOfGroups);
         this.scheduleGroups(tournamentId);
     }
 
-    private List<GroupResponse> createGroups(int tournamentId, List<Integer> teamInfoIds, int nbOfGroups) {
+    private List<GroupResponse> createGroups(Integer tournamentId, List<Integer> teamInfoIds, Integer nbOfGroups) {
         int nbOfTeamsPerGroup = teamInfoIds.size() / nbOfGroups;
 
         Collections.shuffle(teamInfoIds);
@@ -65,7 +65,7 @@ public class GroupService {
 
     /////////////////////////////////
 
-    private List<GroupDaysResponse> scheduleGroups(int tournamentId) {
+    private List<GroupDaysResponse> scheduleGroups(Integer tournamentId) {
         Map<String, List<Integer>> teamIdsPerGroup = teamService.allTeamIdsPerGroup(tournamentId);
         List<GroupDaysResponse> allResponseGroupDays = new ArrayList<>();
         for (Map.Entry<String, List<Integer>> teamIdsOfGroup : teamIdsPerGroup.entrySet()) {

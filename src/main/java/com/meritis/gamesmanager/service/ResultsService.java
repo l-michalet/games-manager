@@ -21,7 +21,7 @@ public class ResultsService {
         this.updateTeamResults(game.getAwayTeamId(), game.getAwayGoals(), game.getHomeGoals());
     }
 
-    public void updateTeamResults(int teamId, int goalsFor, int goalsAgainst) {
+    public void updateTeamResults(Integer teamId, Integer goalsFor, Integer goalsAgainst) {
         Optional<Results> optionalResults = resultsRepository.findById(teamId);
         Results results;
         if (optionalResults.isEmpty()) {

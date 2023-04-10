@@ -1,60 +1,53 @@
 package com.meritis.gamesmanager.model;
 
-
 public class Game {
-    private int id;
-    private int homeTeamId;
-    private int awayTeamId;
+    private Integer id;
+    private Integer homeTeamId;
+    private Integer awayTeamId;
     private String groupName;
-    private int groupDay;
-    private int homeGoals = 0;
-    private int awayGoals = 0;
+    private Integer groupDay;
+    private Integer homeGoals = 0;
+    private Integer awayGoals = 0;
 
-    public Game(int homeTeamId, int awayTeamId, String groupName, int groupDay) {
+    public Game() {
+
+    }
+
+    public Game(Integer homeTeamId, Integer awayTeamId, String groupName, Integer groupDay) {
         this.homeTeamId = homeTeamId;
         this.awayTeamId = awayTeamId;
         this.groupName = groupName;
         this.groupDay = groupDay;
     }
 
-    public Game(int homeTeamId, int awayTeamId) {
+    public Game(Integer homeTeamId, Integer awayTeamId) {
         this.homeTeamId = homeTeamId;
         this.awayTeamId = awayTeamId;
-    }
-
-    public Game(int id, int homeTeamId, int awayTeamId, String groupName, int groupDay, int homeGoals, int awayGoals) {
-        this.id = id;
-        this.homeTeamId = homeTeamId;
-        this.awayTeamId = awayTeamId;
-        this.groupName = groupName;
-        this.groupDay = groupDay;
-        this.homeGoals = homeGoals;
-        this.awayGoals = awayGoals;
     }
 
     // Getters and Setters
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getHomeTeamId() {
+    public Integer getHomeTeamId() {
         return homeTeamId;
     }
 
-    public void setHomeTeamId(int homeTeamId) {
+    public void setHomeTeamId(Integer homeTeamId) {
         this.homeTeamId = homeTeamId;
     }
 
-    public int getAwayTeamId() {
+    public Integer getAwayTeamId() {
         return awayTeamId;
     }
 
-    public void setAwayTeamId(int awayTeamId) {
+    public void setAwayTeamId(Integer awayTeamId) {
         this.awayTeamId = awayTeamId;
     }
 
@@ -66,27 +59,27 @@ public class Game {
         this.groupName = groupName;
     }
 
-    public int getGroupDay() {
+    public Integer getGroupDay() {
         return groupDay;
     }
 
-    public void setGroupDay(int groupDay) {
+    public void setGroupDay(Integer groupDay) {
         this.groupDay = groupDay;
     }
 
-    public int getHomeGoals() {
+    public Integer getHomeGoals() {
         return homeGoals;
     }
 
-    public void setHomeGoals(int homeGoals) {
+    public void setHomeGoals(Integer homeGoals) {
         this.homeGoals = homeGoals;
     }
 
-    public int getAwayGoals() {
+    public Integer getAwayGoals() {
         return awayGoals;
     }
 
-    public void setAwayGoals(int awayGoals) {
+    public void setAwayGoals(Integer awayGoals) {
         this.awayGoals = awayGoals;
     }
 }

@@ -39,9 +39,14 @@ public class ResultsRepositoryImpl implements ResultsRepository {
     }
 
     @Override
-    public Optional<Results> findById(int id) {
+    public Optional<Results> findById(Integer id) {
         List<Results> results = jdbcTemplate.query("SELECT * FROM results WHERE id = ?", new BeanPropertyRowMapper<>(Results.class), id);
         return results.isEmpty() ? Optional.empty() : Optional.of(results.get(0));
+    }
+
+    @Override
+    public Optional<Results> findByTeamId(String teamId) {
+        return Optional.empty();
     }
 
     @Override
@@ -51,6 +56,11 @@ public class ResultsRepositoryImpl implements ResultsRepository {
         }
         String sql = "SELECT * FROM results WHERE id IN (" + String.join(",", Collections.nCopies(ids.size(), "?")) + ")";
         return jdbcTemplate.query(sql, ids.toArray(), new ResultsMapper());
+    }
+
+    @Override
+    public List<Results> findAll() {
+        return jdbcTemplate.query("SELECT * FROM results", new BeanPropertyRowMapper<>(Results.class));
     }
 
     private static class ResultsMapper implements RowMapper<Results> {
