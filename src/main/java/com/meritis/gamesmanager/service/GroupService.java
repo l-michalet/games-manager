@@ -8,6 +8,7 @@ import com.meritis.gamesmanager.model.helpers.GroupDayResponse;
 import com.meritis.gamesmanager.model.helpers.GroupDaysResponse;
 import com.meritis.gamesmanager.model.Results;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +33,7 @@ public class GroupService {
         this.resultsService = resultsService;
     }
 
+    @Transactional
     public void prepareGroups(int tournamentId, List<Integer> teamInfoIds, int nbOfGroups) {
         this.createGroups(tournamentId, teamInfoIds, nbOfGroups);
         this.scheduleGroups(tournamentId);
