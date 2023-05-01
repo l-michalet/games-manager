@@ -4,6 +4,7 @@ import com.meritis.gamesmanager.model.Team;
 import com.meritis.gamesmanager.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class TeamService {
         return teamRepository.findAll();
     }
 
+    @Transactional
     public List<Team> saveAll(List<Team> teams) {
         return teamRepository.saveAll(teams);
     }

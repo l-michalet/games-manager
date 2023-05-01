@@ -4,6 +4,7 @@ import com.meritis.gamesmanager.model.Game;
 import com.meritis.gamesmanager.repository.GameRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,13 +47,14 @@ public class GameService {
                 .collect(Collectors.groupingBy(Game::getGroupDay));
     }
 
+    @Transactional
     public void playGames(List<Game> games) {
         for (Game game : games) {
             this.playGame(game);
         }
     }
 
-    public void playGame(Game game) {
+    private void playGame(Game game) {
         generateRandomScore(game);
         gameRepository.save(game);
         resultsService.updateResults(game);

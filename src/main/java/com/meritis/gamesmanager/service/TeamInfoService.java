@@ -4,6 +4,7 @@ import com.meritis.gamesmanager.model.TeamInfo;
 import com.meritis.gamesmanager.repository.TeamInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class TeamInfoService {
         return teamInfos;
     }
 
+    @Transactional
     public void saveAll(List<TeamInfo> teamInfos) {
         teamInfoRepository.saveAll(teamInfos);
     }

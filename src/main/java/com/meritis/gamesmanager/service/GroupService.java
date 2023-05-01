@@ -9,6 +9,7 @@ import com.meritis.gamesmanager.model.helpers.GroupDaysResponse;
 import com.meritis.gamesmanager.model.Results;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +29,7 @@ public class GroupService {
     private static final int FIRST_ASCII_CHARACTER = 65;
 
 
+    @Transactional
     public void prepareGroups(int tournamentId, List<Integer> teamInfoIds, int nbOfGroups) {
         this.createGroups(tournamentId, teamInfoIds, nbOfGroups);
         this.scheduleGroups(tournamentId);
@@ -108,6 +110,7 @@ public class GroupService {
 
     /////////////////////////////////
 
+    @Transactional
     public void playGroups() {
         Map<Integer, List<Game>> gamesPerDay = gameService.allGamesPerDay();
         for (Map.Entry<Integer, List<Game>> gamesOfDay : gamesPerDay.entrySet()) {
