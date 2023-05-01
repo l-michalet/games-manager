@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.meritis</groupId>
-	<artifactId>games-predictor</artifactId>
+	<artifactId>games-manager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gamesManager</name>
 	<description>Manage your games and tournaments</description>
