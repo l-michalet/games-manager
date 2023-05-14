@@ -1,37 +1,59 @@
 package com.meritis.gamesmanager.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
-@Table
-@Data
-@NoArgsConstructor
+@Table(name = "team")
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private int id;
+    private Long id;
 
     @Column
-    private int teamInfoId;
+    private String shortName;
 
-    @Column
-    private int tournamentId;
+    private String fullName;
 
-    @Column
-    private String groupName;
+    @ManyToMany(mappedBy = "teams")
+    private List<Tournament> tournaments;
 
-    public Team(int teamInfoId, int tournamentId, String groupName) {
-        this.teamInfoId = teamInfoId;
-        this.tournamentId = tournamentId;
-        this.groupName = groupName;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public List<Tournament> getTournaments() {
+        return tournaments;
+    }
+
+    public void setTournaments(List<Tournament> tournaments) {
+        this.tournaments = tournaments;
     }
 }

@@ -1,11 +1,11 @@
 package com.meritis.gamesmanager.service;
 
-import com.meritis.gamesmanager.model.Game;
+import com.meritis.gamesmanager.model.GroupGame;
 import com.meritis.gamesmanager.model.Team;
 import com.meritis.gamesmanager.model.TeamInfo;
-import com.meritis.gamesmanager.model.helpers.GroupResponse;
-import com.meritis.gamesmanager.model.helpers.GroupDayResponse;
-import com.meritis.gamesmanager.model.helpers.GroupDaysResponse;
+import com.meritis.gamesmanager.model.request.GroupResponse;
+import com.meritis.gamesmanager.model.request.GroupDayResponse;
+import com.meritis.gamesmanager.model.request.GroupDaysResponse;
 import com.meritis.gamesmanager.model.Results;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class GroupService {
-    private final GameService gameService;
+    private final GroupGameService groupGameService;
     private final TeamService teamService;
     private final TeamInfoService teamInfoService;
     private final ResultsService resultsService;
@@ -88,18 +88,18 @@ public class GroupService {
         int day = 0;
         for (int round = nbOfRounds-1; round >= 0; round--)  {
             System.out.println("----- Day " + (++day) + " -----");
-            List<Game> gamesOfDay = new ArrayList<>();
+            List<GroupGame> gamesOfDay = new ArrayList<>();
             int teamId = round % nbOfRounds;
             if (!evenTeamOfGroupIds.get(teamId).equals(BREAK)) {
-                gameService.scheduleGame(teamIdsOfGroup.get(0), evenTeamOfGroupIds.get(teamId), groupName, day);
-                gamesOfDay.add(new Game(teamIdsOfGroup.get(0), evenTeamOfGroupIds.get(teamId)));
+                groupGameService.scheduleGame(teamIdsOfGroup.get(0), evenTeamOfGroupIds.get(teamId), groupName, day);
+                gamesOfDay.add(new GroupGame(teamIdsOfGroup.get(0), evenTeamOfGroupIds.get(teamId)));
             }
             for (int i = 1; i < (nbOfRounds+1)/2; i++) {
                 int firstTeam = (round + i) % nbOfRounds;
                 int secondTeam = (round  + nbOfRounds - i) % nbOfRounds;
                 if (!evenTeamOfGroupIds.get(firstTeam).equals(BREAK) && !evenTeamOfGroupIds.get(secondTeam).equals(BREAK)) {
-                    gameService.scheduleGame(evenTeamOfGroupIds.get(firstTeam), evenTeamOfGroupIds.get(secondTeam), groupName, day);
-                    gamesOfDay.add(new Game(evenTeamOfGroupIds.get(firstTeam), evenTeamOfGroupIds.get(secondTeam)));
+                    groupGameService.scheduleGame(evenTeamOfGroupIds.get(firstTeam), evenTeamOfGroupIds.get(secondTeam), groupName, day);
+                    gamesOfDay.add(new GroupGame(evenTeamOfGroupIds.get(firstTeam), evenTeamOfGroupIds.get(secondTeam)));
                 }
             }
             groupDayResponses.add(new GroupDayResponse(day, gamesOfDay));
@@ -112,22 +112,22 @@ public class GroupService {
 
     @Transactional
     public void playGroups() {
-        Map<Integer, List<Game>> gamesPerDay = gameService.allGamesPerDay();
-        for (Map.Entry<Integer, List<Game>> gamesOfDay : gamesPerDay.entrySet()) {
+        Map<Integer, List<GroupGame>> gamesPerDay = groupGameService.allGamesPerDay();
+        for (Map.Entry<Integer, List<GroupGame>> gamesOfDay : gamesPerDay.entrySet()) {
             this.playGroupDay(gamesOfDay.getKey(), gamesOfDay.getValue());
         }
     }
 
-    private void playGroupDay(Integer day, List<Game> gamesOfDay) {
+    private void playGroupDay(Integer day, List<GroupGame> gamesOfDay) {
         System.out.println("\n**********************************");
         System.out.format("Day %d:\n", day);
 
-        Map<String, List<Game>> gamesOfDayPerGroup = gamesOfDay.stream()
-                .collect(Collectors.groupingBy(Game::getGroupName));
-        for (Map.Entry<String, List<Game>> group : gamesOfDayPerGroup.entrySet()) {
+        Map<String, List<GroupGame>> gamesOfDayPerGroup = gamesOfDay.stream()
+                .collect(Collectors.groupingBy(GroupGame::getGroupName));
+        for (Map.Entry<String, List<GroupGame>> group : gamesOfDayPerGroup.entrySet()) {
             System.out.println("\n----------------------");
             System.out.format("Group %s: \n", group.getKey());
-            gameService.playGames(group.getValue());
+            groupGameService.playGames(group.getValue());
         }
     }
 

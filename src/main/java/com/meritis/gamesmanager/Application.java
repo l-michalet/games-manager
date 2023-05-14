@@ -19,7 +19,6 @@ public class Application {
 		TournamentService tournamentService = applicationContext.getBean(TournamentService.class);
 
 		List<Integer> teamInfoIds = IntStream.rangeClosed(1, 16).boxed().collect(Collectors.toCollection(ArrayList::new));
-		tournamentService.createTournament("New tournament", teamInfoIds, 4);
 
 	}
 }

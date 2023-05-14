@@ -1,41 +1,21 @@
-package com.meritis.gamesmanager.model;
+package com.meritis.gamesmanager.model.response;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
-@Table(name = "tournament")
-public class Tournament {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TournamentResponse {
     private Long id;
-
     private String name;
-
-    @Column(name = "start_date")
     private LocalDate startDate;
-
-    @Column(name = "end_date")
     private LocalDate endDate;
-
-    @Column(name = "is_direct_elimination")
     private boolean isDirectElimination;
+    private List<TeamResponse> teams;
 
-    @ManyToMany(mappedBy = "tournaments", cascade = CascadeType.ALL)
-    private List<Team> teams;
+    public TournamentResponse() {}
 
-    public Tournament() {
-    }
-
-    public Tournament(String name, LocalDate startDate, LocalDate endDate, boolean isDirectElimination, List<Team> teams) {
+    public TournamentResponse(Long id, String name, LocalDate startDate, LocalDate endDate,
+                              boolean isDirectElimination, List<TeamResponse> teams) {
+        this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -83,11 +63,12 @@ public class Tournament {
         isDirectElimination = directElimination;
     }
 
-    public List<Team> getTeams() {
+    public List<TeamResponse> getTeams() {
         return teams;
     }
 
-    public void setTeams(List<Team> teams) {
+    public void setTeams(List<TeamResponse> teams) {
         this.teams = teams;
     }
 }
+

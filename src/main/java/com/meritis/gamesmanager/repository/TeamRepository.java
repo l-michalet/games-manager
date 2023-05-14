@@ -8,8 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TeamRepository extends JpaRepository<Team, String> {
-    List<Team> findAllByTournamentId(int tournamentId);
-
-    Optional<Team> findByTournamentIdAndTeamInfoId(int tournamentId, int teamInfoId);
+public interface TeamRepository extends JpaRepository<Team, Long> {
 }

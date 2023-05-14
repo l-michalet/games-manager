@@ -1,4 +1,4 @@
-package com.meritis.gamesmanager.model.helpers;
+package com.meritis.gamesmanager.model.request;
 
 import lombok.Data;
 

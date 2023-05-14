@@ -1,8 +1,8 @@
 package com.meritis.gamesmanager.controller;
 
-import com.meritis.gamesmanager.model.Game;
+import com.meritis.gamesmanager.model.GroupGame;
 import com.meritis.gamesmanager.repository.GameRepository;
-import com.meritis.gamesmanager.service.GameService;
+import com.meritis.gamesmanager.service.GroupGameService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,26 +16,26 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class GameApi {
-    private final GameService gameService;
+    private final GroupGameService groupGameService;
     private final GameRepository gameRepository;
 
-    public GameApi(GameService gameService, GameRepository gameRepository) {
-        this.gameService = gameService;
+    public GameApi(GroupGameService groupGameService, GameRepository gameRepository) {
+        this.groupGameService = groupGameService;
         this.gameRepository = gameRepository;
     }
 
     @GetMapping("/game/{gameId}")
-    public ResponseEntity<Game> findGame(@PathVariable("gameId") Integer gameId) {
+    public ResponseEntity<GroupGame> findGame(@PathVariable("gameId") Integer gameId) {
         System.out.format("GameApi | findGame gameId=%s", gameId);
-        Game game = gameRepository.findById(gameId)
+        GroupGame groupGame = gameRepository.findById(gameId)
                 .orElseThrow(RuntimeException::new);
-        return new ResponseEntity<>(game, HttpStatus.OK);
+        return new ResponseEntity<>(groupGame, HttpStatus.OK);
     }
 
     @GetMapping("/game")
-    public ResponseEntity<List<Game>> listGames(@Param("groupName") String groupName,
-                                                @Param("groupDay") Integer groupDay) {
+    public ResponseEntity<List<GroupGame>> listGames(@Param("groupName") String groupName,
+                                                     @Param("groupDay") Integer groupDay) {
         System.out.format("GameApi | listGames");
-        return new ResponseEntity<>(gameService.listGames(groupName, groupDay), HttpStatus.OK);
+        return new ResponseEntity<>(groupGameService.listGames(groupName, groupDay), HttpStatus.OK);
     }
 }

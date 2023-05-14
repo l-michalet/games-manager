@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface TournamentRepository extends JpaRepository<Tournament, Integer> {
+public interface TournamentRepository extends JpaRepository<Tournament, Long> {
 
     Optional<Tournament> findById(Integer tournamentId);
+    Tournament save(Tournament tournament);
 }

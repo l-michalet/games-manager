@@ -1,7 +1,7 @@
 package com.meritis.gamesmanager.controller;
 
 import com.meritis.gamesmanager.model.TeamInfo;
-import com.meritis.gamesmanager.model.helpers.TeamRequest;
+import com.meritis.gamesmanager.model.request.TeamRequest;
 import com.meritis.gamesmanager.repository.TeamInfoRepository;
 
 import org.springframework.data.repository.query.Param;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @RestController
