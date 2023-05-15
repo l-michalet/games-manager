@@ -26,6 +26,9 @@ public class Tournament {
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @Column(name = "nb_of_groups")
+    private int nbOfGroups;
+
     @Column(name = "is_direct_elimination")
     private boolean isDirectElimination;
 
@@ -35,10 +38,11 @@ public class Tournament {
     public Tournament() {
     }
 
-    public Tournament(String name, LocalDate startDate, LocalDate endDate, boolean isDirectElimination, List<Team> teams) {
+    public Tournament(String name, LocalDate startDate, LocalDate endDate, int nbOfGroups, boolean isDirectElimination, List<Team> teams) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.nbOfGroups = nbOfGroups;
         this.isDirectElimination = isDirectElimination;
         this.teams = teams;
     }
@@ -73,6 +77,14 @@ public class Tournament {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public int getNbOfGroups() {
+        return nbOfGroups;
+    }
+
+    public void setNbOfGroups(int nbOfGroups) {
+        this.nbOfGroups = nbOfGroups;
     }
 
     public boolean isDirectElimination() {

@@ -1,6 +1,7 @@
 package com.meritis.gamesmanager.model;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,9 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String groupName;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_phase_id")
     private GroupPhase groupPhase;
@@ -39,8 +43,8 @@ public class Group {
     public Group() {
     }
 
-    public Group(GroupPhase groupPhase, List<Team> teams, List<GroupGame> groupGames) {
-        this.groupPhase = groupPhase;
+    public Group(String groupName, List<Team> teams, List<GroupGame> groupGames) {
+        this.groupName = groupName;
         this.teams = teams;
         this.groupGames = groupGames;
     }

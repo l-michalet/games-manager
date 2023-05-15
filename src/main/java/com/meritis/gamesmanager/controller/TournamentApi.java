@@ -58,6 +58,12 @@ public class TournamentApi {
                 .body(TournamentMapper.toResponse(tournament));
     }
 
+    @PostMapping("/{tournamentId}/start")
+    public ResponseEntity<Void> startTournament(@PathVariable Long tournamentId) {
+        tournamentService.startTournament(tournamentId);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/{tournamentId}")
     public ResponseEntity<TournamentResponse> updateTournament(@PathVariable Long tournamentId,
                                                                @RequestBody TournamentRequest tournamentRequest) {

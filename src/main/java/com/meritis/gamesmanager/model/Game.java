@@ -6,20 +6,20 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "elimination_game")
-public class EliminationGame {
+@Table(name = "game")
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Game {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "elimination_phase_id")
-    private EliminationPhase eliminationPhase;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "home_team")
@@ -29,26 +29,19 @@ public class EliminationGame {
     @JoinColumn(name = "away_team")
     private Team awayTeam;
 
-    @Column(name = "home_goals")
+    @Column(name = "home_team_score")
     private int homeTeamScore;
 
-    @Column(name = "away_goals")
+    @Column(name = "away_team_score")
     private int awayTeamScore;
 
-    // Constructors
-
-    public EliminationGame() {
+    public Game() {
     }
 
-    public EliminationGame(EliminationPhase eliminationPhase, Team homeTeam, Team awayTeam, int homeTeamScore, int awayTeamScore) {
-        this.eliminationPhase = eliminationPhase;
+    public Game(Team homeTeam, Team awayTeam) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
-        this.homeTeamScore = homeTeamScore;
-        this.awayTeamScore = awayTeamScore;
     }
-
-    // Getters and setters
 
     public Long getId() {
         return id;
@@ -56,14 +49,6 @@ public class EliminationGame {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public EliminationPhase getEliminationPhase() {
-        return eliminationPhase;
-    }
-
-    public void setEliminationPhase(EliminationPhase eliminationPhase) {
-        this.eliminationPhase = eliminationPhase;
     }
 
     public Team getHomeTeam() {

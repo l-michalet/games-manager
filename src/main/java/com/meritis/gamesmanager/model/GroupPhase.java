@@ -26,5 +26,35 @@ public class GroupPhase {
     @OneToMany(mappedBy = "groupPhase", cascade = CascadeType.ALL)
     private List<Group> groups;
 
-    // getters and setters
+    public GroupPhase() {
+    }
+
+    public GroupPhase(Tournament tournament, List<Group> groups) {
+        this.tournament = tournament;
+        this.groups = groups;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Tournament getTournament() {
+        return tournament;
+    }
+
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
 }

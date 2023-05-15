@@ -1,67 +1,56 @@
 package com.meritis.gamesmanager.service;
 
+import com.meritis.gamesmanager.model.Group;
 import com.meritis.gamesmanager.model.GroupGame;
+import com.meritis.gamesmanager.model.Team;
 import com.meritis.gamesmanager.repository.GameRepository;
-import lombok.RequiredArgsConstructor;
+import com.meritis.gamesmanager.repository.GroupGameRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class GroupGameService {
-    private final GameRepository gameRepository;
 
-    private static final List<Integer> goalsDistribution = Arrays.asList(0,0,0,0,1,1,1,1,1,2,2,2,2,3,3,3,4,4,5);
+    private final GroupGameRepository groupGameRepository;
 
-    public List<GroupGame> listGames(String groupName, Integer groupDay) {
-        List<GroupGame> groupGames;
-        if (groupName != null && groupDay != null) {
-            groupGames = gameRepository.findAllByGroupNameAndGroupDay(groupName,groupDay);
-        } else if(groupName != null) {
-            groupGames = gameRepository.findAllByGroupName(groupName);
-        } else if(groupDay != null) {
-            groupGames = gameRepository.findAllByGroupDay(groupDay);
-        } else {
-            groupGames = gameRepository.findAll();
+    public GroupGameService(GroupGameRepository groupGameRepository) {
+        this.groupGameRepository = groupGameRepository;
+    }
+
+    private static final Team BREAK = new Team();
+
+    public List<GroupGame> createGroupGames(List<Team> teams) {
+        List<GroupGame> allGames = new ArrayList<>();
+        int nbOfTeams = teams.size();
+        List<Team> evenTeams = new ArrayList<>(teams.subList(1, nbOfTeams));
+
+        if (nbOfTeams % 2 != 0) {
+            evenTeams.add(BREAK);
         }
-        return groupGames;
-    }
 
-    public void scheduleGame(int home, int away, String group, int day) {
-        System.out.println(home + " vs. "+ away);
+        int nbOfRounds = evenTeams.size();
+        int day = 0;
+        for (int round = nbOfRounds-1; round >= 0; round--)  {
 
-        GroupGame groupGame = new GroupGame(home, away, group, day);
-        gameRepository.save(groupGame);
-    }
-
-    public Map<Integer, List<GroupGame>> allGamesPerDay() {
-        return gameRepository.findAll().stream()
-                .filter(t -> t.getGroupDay() != 0)
-                .collect(Collectors.groupingBy(GroupGame::getGroupDay));
-    }
-
-    @Transactional
-    public void playGames(List<GroupGame> groupGames) {
-        for (GroupGame groupGame : groupGames) {
-            this.playGame(groupGame);
+            System.out.println("----- Day " + (++day) + " -----");
+            List<GroupGame> gamesOfDay = new ArrayList<>();
+            int teamId = round % nbOfRounds;
+            if (!evenTeams.get(teamId).equals(BREAK)) {
+                GroupGame groupGame = new GroupGame(teams.get(0), evenTeams.get(teamId), day);
+                gamesOfDay.add(groupGame);
+            }
+            for (int i = 1; i < (nbOfRounds+1)/2; i++) {
+                int homePos = (round + i) % nbOfRounds;
+                int awayPos = (round  + nbOfRounds - i) % nbOfRounds;
+                if (!evenTeams.get(homePos).equals(BREAK) && !evenTeams.get(awayPos).equals(BREAK)) {
+                    GroupGame groupGame = new GroupGame(evenTeams.get(homePos), evenTeams.get(awayPos), day);
+                    gamesOfDay.add(groupGame);
+                }
+            }
+            allGames.addAll(gamesOfDay);
         }
-    }
-
-    private void playGame(GroupGame groupGame) {
-        generateRandomScore(groupGame);
-        gameRepository.save(groupGame);
-        System.out.format(groupGame.getHomeTeamId() + " %d : %d " + groupGame.getAwayTeamId() +"\n", groupGame.getHomeGoals(), groupGame.getAwayGoals());
-    }
-
-    private void generateRandomScore(GroupGame groupGame){
-        Random random = new Random();
-        groupGame.setHomeGoals(goalsDistribution.get(random.nextInt(goalsDistribution.size())));
-        groupGame.setAwayGoals(goalsDistribution.get(random.nextInt(goalsDistribution.size())));
+        return groupGameRepository.saveAll(allGames);
     }
 }

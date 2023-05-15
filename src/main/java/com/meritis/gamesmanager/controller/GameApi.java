@@ -2,7 +2,7 @@ package com.meritis.gamesmanager.controller;
 
 import com.meritis.gamesmanager.model.GroupGame;
 import com.meritis.gamesmanager.repository.GameRepository;
-import com.meritis.gamesmanager.service.GroupGameService;
+import com.meritis.gamesmanager.service.GroupGameService2;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +16,11 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class GameApi {
-    private final GroupGameService groupGameService;
+    private final GroupGameService2 groupGameService2;
     private final GameRepository gameRepository;
 
-    public GameApi(GroupGameService groupGameService, GameRepository gameRepository) {
-        this.groupGameService = groupGameService;
+    public GameApi(GroupGameService2 groupGameService2, GameRepository gameRepository) {
+        this.groupGameService2 = groupGameService2;
         this.gameRepository = gameRepository;
     }
 
@@ -36,6 +36,6 @@ public class GameApi {
     public ResponseEntity<List<GroupGame>> listGames(@Param("groupName") String groupName,
                                                      @Param("groupDay") Integer groupDay) {
         System.out.format("GameApi | listGames");
-        return new ResponseEntity<>(groupGameService.listGames(groupName, groupDay), HttpStatus.OK);
+        return new ResponseEntity<>(groupGameService2.listGames(groupName, groupDay), HttpStatus.OK);
     }
 }

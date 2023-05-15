@@ -21,18 +21,4 @@ public class TeamApi {
         this.teamRepository = teamRepository;
     }
 
-    @GetMapping("/tournament/{tournamentId}/team/{teamInfoId}")
-    public ResponseEntity<Team> findTeam(@PathVariable("tournamentId") Integer tournamentId,
-                                         @PathVariable("teamInfoId") Integer teamInfoId) {
-        System.out.format("TeamApi | findTeam tournamentId=%s teamInfoId=%d", tournamentId, teamInfoId);
-        Team team = teamRepository.findByTournamentIdAndTeamInfoId(tournamentId, teamInfoId)
-                .orElseThrow(RuntimeException::new);
-        return new ResponseEntity<>(team, HttpStatus.OK);
-    }
-
-    @GetMapping("/tournament/{tournamentId}/team")
-    public ResponseEntity<List<Team>> listTeams(@PathVariable("tournamentId") Integer tournamentId) {
-        System.out.format("TeamApi | listTeams");
-        return new ResponseEntity<>(teamRepository.findAllByTournamentId(tournamentId), HttpStatus.OK);
-    }
 }

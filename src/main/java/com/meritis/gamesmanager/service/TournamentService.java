@@ -3,12 +3,11 @@ package com.meritis.gamesmanager.service;
 import com.meritis.gamesmanager.model.Team;
 import com.meritis.gamesmanager.model.Tournament;
 import com.meritis.gamesmanager.model.request.TournamentRequest;
-import com.meritis.gamesmanager.model.response.TournamentResponse;
 import com.meritis.gamesmanager.repository.TournamentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-;import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,27 +16,34 @@ import java.util.stream.Collectors;
 public class TournamentService {
     private final TournamentRepository tournamentRepository;
     private final TeamService teamService;
+    private final GroupPhaseService groupPhaseService;
 
-    public TournamentService(TournamentRepository tournamentRepository, TeamService teamService) {
+    public TournamentService(TournamentRepository tournamentRepository, TeamService teamService, GroupPhaseService groupPhaseService) {
         this.tournamentRepository = tournamentRepository;
         this.teamService = teamService;
+        this.groupPhaseService = groupPhaseService;
     }
 
     @Transactional
     public Tournament createTournament(TournamentRequest tournamentRequest) {
-        List<Team> teams = new ArrayList<>();
-        for (Long teamId : tournamentRequest.getTeamIds()) {
-            teams.add(teamService.getTeamById(teamId));
-        }
+        List<Team> teams = tournamentRequest.getTeamIds().stream()
+                .map(teamService::getTeamById)
+                .collect(Collectors.toList());
+
         Tournament tournament = new Tournament(
                 tournamentRequest.getName(),
                 tournamentRequest.getStartDate(),
                 tournamentRequest.getEndDate(),
+                tournamentRequest.getNbOfGroups(),
                 tournamentRequest.isDirectElimination(),
                 teams
         );
-
         Tournament savedTournament = tournamentRepository.save(tournament);
+
+        // Add the tournament to the teams
+        teams.forEach(t -> t.getTournaments().add(savedTournament));
+        teamService.saveAll(teams);
+
         return savedTournament;
     }
 
@@ -66,16 +72,25 @@ public class TournamentService {
                 tournament.getTeams().add(teamService.getTeamById(teamId));
             }
         }
-
-        Tournament updatedTournament = tournamentRepository.save(tournament);
-
-        return updatedTournament;
+        return tournamentRepository.save(tournament);
     }
 
     public void deleteTournament(Long tournamentId) {
         tournamentRepository.deleteById(tournamentId);
 
         //TODO: delete groups, games, ....
+    }
+
+    @Transactional
+    public Tournament startTournament(Long tournamentId) {
+        Tournament tournament = tournamentRepository.findById(tournamentId)
+                .orElseThrow(() -> new EntityNotFoundException("Tournament with id " + tournamentId + " not found"));
+
+        // Create group phases and assign teams to groups
+        groupPhaseService.createGroupPhase(tournament);
+        tournament.setStartDate(LocalDate.now());
+        tournamentRepository.save(tournament);
+        return tournament;
     }
 
 }

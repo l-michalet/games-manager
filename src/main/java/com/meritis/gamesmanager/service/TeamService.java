@@ -26,10 +26,12 @@ public class TeamService {
                 .orElseThrow(() -> new EntityNotFoundException("Team not found with id: " + teamId));
     }
 
-    public List<TeamResponse> getAllTeams() {
-        return teamRepository.findAll().stream()
-                .map(TeamMapper::toResponse)
-                .collect(Collectors.toList());
+    public List<Team> getAllTeamsByTournamentId(Long tournamentId) {
+        return teamRepository.findAllByTournamentId(tournamentId);
+    }
+
+    public List<Team> saveAll(List<Team> teams) {
+        return teamRepository.saveAll(teams);
     }
 
 
