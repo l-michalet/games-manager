@@ -22,7 +22,7 @@ public class TeamApi {
 
     @GetMapping("/teams")
     public ResponseEntity<List<Team>> listTeams() {
-        log.info("TeamApi | listTeams");
+        log.info("[TeamApi] listTeams");
         return new ResponseEntity<>(teamService.listTeams(), HttpStatus.OK);
     }
 

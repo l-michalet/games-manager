@@ -47,7 +47,7 @@ public class TournamentService {
         return savedTournament;
     }
 
-    public List<Tournament> getAllTournaments() {
+    public List<Tournament> listTournaments() {
         return tournamentRepository.findAll();
     }
 

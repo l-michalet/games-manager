@@ -3,6 +3,7 @@ package com.meritis.gamesmanager.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -23,7 +24,7 @@ public class EliminationPhase {
     private String type;
 
     @OneToMany(mappedBy = "eliminationPhase", cascade = CascadeType.ALL)
-    private List<EliminationGame> games;
+    private List<EliminationGame> games = new ArrayList<>();
 
     public EliminationPhase(Tournament tournament, String type, List<EliminationGame> games) {
         this.tournament = tournament;

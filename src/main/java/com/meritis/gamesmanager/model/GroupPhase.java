@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,7 +32,7 @@ public class GroupPhase {
     private Tournament tournament;
 
     @OneToMany(mappedBy = "groupPhase", cascade = CascadeType.ALL)
-    private List<Group> groups;
+    private List<Group> groups = new ArrayList<>();
 
     public GroupPhase(Tournament tournament, List<Group> groups) {
         this.tournament = tournament;

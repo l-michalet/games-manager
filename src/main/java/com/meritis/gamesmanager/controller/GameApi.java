@@ -23,7 +23,7 @@ public class GameApi {
 
     @GetMapping("/games")
     public ResponseEntity<List<Game>> listGames() {
-        log.info("GameApi | listGames");
+        log.info("[GameApi] listGames");
         return new ResponseEntity<>(gameService.listGames(), HttpStatus.OK);
     }
 

@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -41,7 +42,7 @@ public class Tournament {
     private boolean isDirectElimination;
 
     @ManyToMany(mappedBy = "tournaments", cascade = CascadeType.ALL)
-    private List<Team> teams;
+    private List<Team> teams = new ArrayList<>();
 
     public Tournament(String name, LocalDate startDate, LocalDate endDate, int nbOfGroups, boolean isDirectElimination, List<Team> teams) {
         this.name = name;
