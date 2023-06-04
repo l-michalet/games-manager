@@ -13,7 +13,7 @@ public class TournamentMapper {
 
     public static TournamentResponse toResponse(Tournament tournament) {
         List<TeamResponse> teamsResponse = tournament.getTeams().stream()
-                .map(TeamMapper::toResponse)
+                .map(TeamMapper::teamToTeamResponse)
                 .collect(Collectors.toList());
         return new TournamentResponse(tournament.getName(), tournament.getStartDate(), tournament.getEndDate(), tournament.isDirectElimination(), teamsResponse);
     }

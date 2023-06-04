@@ -4,7 +4,6 @@ import com.meritis.gamesmanager.model.Group;
 import com.meritis.gamesmanager.model.GroupGame;
 import com.meritis.gamesmanager.model.Team;
 import com.meritis.gamesmanager.repository.GroupRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,11 +11,15 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class GroupService {
 
     private final GroupRepository groupRepository;
     private final GroupGameService groupGameService;
+
+    public GroupService(GroupRepository groupRepository, GroupGameService groupGameService) {
+        this.groupRepository = groupRepository;
+        this.groupGameService = groupGameService;
+    }
 
     private static final int FIRST_ASCII_CHARACTER = 65;
 

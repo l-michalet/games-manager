@@ -5,6 +5,7 @@ import com.meritis.gamesmanager.model.Tournament;
 import com.meritis.gamesmanager.model.request.TournamentRequest;
 import com.meritis.gamesmanager.model.response.TournamentResponse;
 import com.meritis.gamesmanager.service.TournamentService;;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,14 +24,11 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
+@AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/tournaments")
 public class TournamentApi {
     private final TournamentService tournamentService;
-
-    public TournamentApi(TournamentService tournamentService) {
-        this.tournamentService = tournamentService;
-    }
 
     @GetMapping("")
     public ResponseEntity<List<TournamentResponse>> listTournaments() {
@@ -42,7 +40,6 @@ public class TournamentApi {
         return ResponseEntity.ok(tournaments);
     }
 
-    // Endpoint pour récupérer un tournament par id
     @GetMapping("/{id}")
     public ResponseEntity<TournamentResponse> getTournamentById(@PathVariable Long id) {
         Tournament tournament = tournamentService.getTournamentById(id);

@@ -17,11 +17,11 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api")
+@RequestMapping("/api/games")
 public class GameApi {
     private final GameService gameService;
 
-    @GetMapping("/games")
+    @GetMapping
     public ResponseEntity<List<Game>> listGames() {
         log.info("[GameApi] listGames");
         return new ResponseEntity<>(gameService.listGames(), HttpStatus.OK);
