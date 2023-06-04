@@ -15,11 +15,11 @@ public class GroupGame extends Game {
     @JoinColumn(name = "group_id")
     private Group group;
 
-    @Column(name = "\"day\"")
-    private int day;
+    @Column(name = "group_day")
+    private int groupDay;
 
-    public GroupGame(Team homeTeam, Team awayTeam, int day) {
+    public GroupGame(Team homeTeam, Team awayTeam, int groupDay) {
         super(homeTeam, awayTeam);
-        this.day = day;
+        this.groupDay = groupDay;
     }
 }

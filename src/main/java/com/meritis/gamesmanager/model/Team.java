@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.List;
@@ -30,6 +32,9 @@ public class Team {
     private String fullName;
 
     @ManyToMany
+    @JoinTable(name = "team_tournament",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "tournament_id"))
     private List<Tournament> tournaments;
 
     public Team(String shortName, String fullName, List<Tournament> tournaments) {

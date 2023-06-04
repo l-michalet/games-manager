@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,10 +17,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Data
 @NoArgsConstructor
+@Data
 @Table(name = "games")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "game_type")
 public abstract class Game {
 
     @Id
