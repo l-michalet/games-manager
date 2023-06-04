@@ -1,23 +1,19 @@
 package com.meritis.gamesmanager.service;
 
-import com.meritis.gamesmanager.model.Group;
 import com.meritis.gamesmanager.model.GroupGame;
 import com.meritis.gamesmanager.model.Team;
 import com.meritis.gamesmanager.repository.GameRepository;
-import com.meritis.gamesmanager.repository.GroupGameRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class GroupGameService {
 
-    private final GroupGameRepository groupGameRepository;
-
-    public GroupGameService(GroupGameRepository groupGameRepository) {
-        this.groupGameRepository = groupGameRepository;
-    }
+    private final GameRepository gameRepository;
 
     private static final Team BREAK = new Team();
 
@@ -51,6 +47,6 @@ public class GroupGameService {
             }
             allGames.addAll(gamesOfDay);
         }
-        return groupGameRepository.saveAll(allGames);
+        return gameRepository.saveAll(allGames);
     }
 }

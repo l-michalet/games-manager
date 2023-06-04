@@ -1,5 +1,8 @@
 package com.meritis.gamesmanager.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,8 +16,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "game")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Data
+@NoArgsConstructor
+@Table(name = "games")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Game {
 
     @Id
@@ -35,51 +40,8 @@ public abstract class Game {
     @Column(name = "away_team_score")
     private int awayTeamScore;
 
-    public Game() {
-    }
-
     public Game(Team homeTeam, Team awayTeam) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Team getHomeTeam() {
-        return homeTeam;
-    }
-
-    public void setHomeTeam(Team homeTeam) {
-        this.homeTeam = homeTeam;
-    }
-
-    public Team getAwayTeam() {
-        return awayTeam;
-    }
-
-    public void setAwayTeam(Team awayTeam) {
-        this.awayTeam = awayTeam;
-    }
-
-    public int getHomeTeamScore() {
-        return homeTeamScore;
-    }
-
-    public void setHomeTeamScore(int homeTeamScore) {
-        this.homeTeamScore = homeTeamScore;
-    }
-
-    public int getAwayTeamScore() {
-        return awayTeamScore;
-    }
-
-    public void setAwayTeamScore(int awayTeamScore) {
-        this.awayTeamScore = awayTeamScore;
     }
 }

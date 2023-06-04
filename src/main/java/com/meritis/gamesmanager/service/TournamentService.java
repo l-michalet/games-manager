@@ -82,7 +82,7 @@ public class TournamentService {
     }
 
     @Transactional
-    public Tournament startTournament(Long tournamentId) {
+    public void startTournament(Long tournamentId) {
         Tournament tournament = tournamentRepository.findById(tournamentId)
                 .orElseThrow(() -> new EntityNotFoundException("Tournament with id " + tournamentId + " not found"));
 
@@ -90,7 +90,6 @@ public class TournamentService {
         groupPhaseService.createGroupPhase(tournament);
         tournament.setStartDate(LocalDate.now());
         tournamentRepository.save(tournament);
-        return tournament;
     }
 
 }

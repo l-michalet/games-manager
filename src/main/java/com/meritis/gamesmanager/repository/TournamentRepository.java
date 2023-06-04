@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface TournamentRepository extends JpaRepository<Tournament, Long> {
 
-    Optional<Tournament> findById(Integer tournamentId);
+    Optional<Tournament> findTournamentById(Integer tournamentId);
     Tournament save(Tournament tournament);
 }

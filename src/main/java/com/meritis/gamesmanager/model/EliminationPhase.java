@@ -1,9 +1,14 @@
 package com.meritis.gamesmanager.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 import javax.persistence.*;
 
 @Entity
+@Data
+@NoArgsConstructor
 @Table(name = "elimination_phase")
 public class EliminationPhase {
     @Id
@@ -14,10 +19,15 @@ public class EliminationPhase {
     @JoinColumn(name = "tournament_id")
     private Tournament tournament;
 
+    @Column(name= "type")
     private String type;
 
     @OneToMany(mappedBy = "eliminationPhase", cascade = CascadeType.ALL)
     private List<EliminationGame> games;
 
-
+    public EliminationPhase(Tournament tournament, String type, List<EliminationGame> games) {
+        this.tournament = tournament;
+        this.type = type;
+        this.games = games;
+    }
 }
