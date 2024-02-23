@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api/games")
+@RequestMapping("/api/v1/games")
 public class GameApi {
     private final GameService gameService;
 

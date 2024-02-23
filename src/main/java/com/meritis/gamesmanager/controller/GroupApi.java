@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api/groups")
+@RequestMapping("/api/v1/groups")
 public class GroupApi {
 
 }

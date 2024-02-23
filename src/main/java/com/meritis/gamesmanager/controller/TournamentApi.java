@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api/tournaments")
+@RequestMapping("/api/v1/tournaments")
 public class TournamentApi {
     private final TournamentService tournamentService;
 
