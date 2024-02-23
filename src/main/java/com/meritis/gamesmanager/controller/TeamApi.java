@@ -1,52 +1,57 @@
 package com.meritis.gamesmanager.controller;
 
+import com.meritis.gamesmanager.mapper.TeamMapper;
 import com.meritis.gamesmanager.model.Team;
-import com.meritis.gamesmanager.repository.TeamRepository;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import com.meritis.gamesmanager.model.request.TeamRequest;
+import com.meritis.gamesmanager.model.response.TeamResponse;
+import com.meritis.gamesmanager.service.TeamService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 
+@Slf4j
 @RestController
+@AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/v1/teams")
 public class TeamApi {
 
-    private final TeamRepository teamRepository;
+    private final TeamService teamService;
 
-    public TeamApi(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
+    @GetMapping
+    public ResponseEntity<List<TeamResponse>> listTeams() {
+        log.info("[TeamApi] listTeams");
+        List<Team> teams = teamService.listTeams();
+        return new ResponseEntity<>(TeamMapper.INSTANCE.teamsToTeamsResponse(teams), HttpStatus.OK);
     }
 
-    @GetMapping("/tournament/{tournamentId}/teams/{teamInfoId}")
-    @ApiOperation(value = "Find a team in a tournament", response = ResponseEntity.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved the team"),
-            @ApiResponse(code = 404, message = "Team not found"),
-            @ApiResponse(code = 500, message = "Internal server error")
-    })
-    public ResponseEntity<Team> findTeam(@PathVariable("tournamentId") Integer tournamentId,
-                                         @PathVariable("teamInfoId") Integer teamInfoId) {
-        System.out.format("TeamApi | findTeam tournamentId=%s teamInfoId=%d", tournamentId, teamInfoId);
-        Team team = teamRepository.findByTournamentIdAndTeamInfoId(tournamentId, teamInfoId)
-                .orElseThrow(RuntimeException::new);
-        return new ResponseEntity<>(team, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<TeamResponse> getTeamById(@PathVariable Long id) {
+        log.info("[TeamApi] getTeamById id={}", id);
+        Team team = teamService.getTeamById(id);
+        if (team == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(TeamMapper.INSTANCE.teamToTeamResponse(team));
     }
 
-    @GetMapping("/tournament/{tournamentId}/teams")
-    @ApiOperation(value = "List all teams of a tournament", response = ResponseEntity.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved all the teams"),
-            @ApiResponse(code = 500, message = "Internal server error")
-    })
-    public ResponseEntity<List<Team>> listTeams(@PathVariable("tournamentId") Integer tournamentId) {
-        System.out.format("TeamApi | listTeams");
-        return new ResponseEntity<>(teamRepository.findAllByTournamentId(tournamentId), HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<TeamResponse> createTeam(@RequestBody TeamRequest teamRequest) {
+        log.info("[TeamApi] createTeam fullName={}", teamRequest.getFullName());
+        Team team = teamService.createTeam(teamRequest);
+        return ResponseEntity
+                .created(URI.create("/teams/" + team.getId()))
+                .body(TeamMapper.INSTANCE.teamToTeamResponse(team));
     }
 }

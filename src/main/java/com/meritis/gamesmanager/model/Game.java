@@ -1,92 +1,49 @@
 package com.meritis.gamesmanager.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class Game {
-    private int id;
-    private int homeTeamId;
-    private int awayTeamId;
-    private String groupName;
-    private int groupDay;
-    private int homeGoals = 0;
-    private int awayGoals = 0;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-    public Game(int homeTeamId, int awayTeamId, String groupName, int groupDay) {
-        this.homeTeamId = homeTeamId;
-        this.awayTeamId = awayTeamId;
-        this.groupName = groupName;
-        this.groupDay = groupDay;
-    }
+@Entity
+@NoArgsConstructor
+@Data
+@Table(name = "games")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "game_type")
+public abstract class Game {
 
-    public Game(int homeTeamId, int awayTeamId) {
-        this.homeTeamId = homeTeamId;
-        this.awayTeamId = awayTeamId;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Game(int id, int homeTeamId, int awayTeamId, String groupName, int groupDay, int homeGoals, int awayGoals) {
-        this.id = id;
-        this.homeTeamId = homeTeamId;
-        this.awayTeamId = awayTeamId;
-        this.groupName = groupName;
-        this.groupDay = groupDay;
-        this.homeGoals = homeGoals;
-        this.awayGoals = awayGoals;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "home_team")
+    private Team homeTeam;
 
-    // Getters and Setters
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "away_team")
+    private Team awayTeam;
 
-    public int getId() {
-        return id;
-    }
+    @Column(name = "home_team_score")
+    private int homeTeamScore;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @Column(name = "away_team_score")
+    private int awayTeamScore;
 
-    public int getHomeTeamId() {
-        return homeTeamId;
-    }
-
-    public void setHomeTeamId(int homeTeamId) {
-        this.homeTeamId = homeTeamId;
-    }
-
-    public int getAwayTeamId() {
-        return awayTeamId;
-    }
-
-    public void setAwayTeamId(int awayTeamId) {
-        this.awayTeamId = awayTeamId;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public int getGroupDay() {
-        return groupDay;
-    }
-
-    public void setGroupDay(int groupDay) {
-        this.groupDay = groupDay;
-    }
-
-    public int getHomeGoals() {
-        return homeGoals;
-    }
-
-    public void setHomeGoals(int homeGoals) {
-        this.homeGoals = homeGoals;
-    }
-
-    public int getAwayGoals() {
-        return awayGoals;
-    }
-
-    public void setAwayGoals(int awayGoals) {
-        this.awayGoals = awayGoals;
+    public Game(Team homeTeam, Team awayTeam) {
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
     }
 }

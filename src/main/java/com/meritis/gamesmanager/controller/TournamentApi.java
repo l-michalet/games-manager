@@ -1,68 +1,80 @@
 package com.meritis.gamesmanager.controller;
 
+import com.meritis.gamesmanager.mapper.TournamentMapper;
 import com.meritis.gamesmanager.model.Tournament;
-import com.meritis.gamesmanager.model.helpers.TournamentRequest;
-import com.meritis.gamesmanager.repository.TournamentRepository;
-import com.meritis.gamesmanager.service.TournamentService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import org.springframework.http.HttpStatus;
+import com.meritis.gamesmanager.model.request.TournamentRequest;
+import com.meritis.gamesmanager.model.response.TournamentResponse;
+import com.meritis.gamesmanager.service.TournamentService;;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
+@AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/v1/tournaments")
 public class TournamentApi {
     private final TournamentService tournamentService;
-    private final TournamentRepository tournamentRepository;
 
-    public TournamentApi(TournamentService tournamentService, TournamentRepository tournamentRepository) {
-        this.tournamentService = tournamentService;
-        this.tournamentRepository = tournamentRepository;
+    @GetMapping("")
+    public ResponseEntity<List<TournamentResponse>> listTournaments() {
+        log.info("[TournamentApi] listTournaments");
+        List<TournamentResponse> tournaments = tournamentService.listTournaments()
+                .stream()
+                .map(TournamentMapper::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(tournaments);
     }
 
-    @PostMapping("/tournament")
-    @ApiOperation(value = "Create a new tournament", response = ResponseEntity.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully created the tournament"),
-            @ApiResponse(code = 500, message = "Internal server error")
-    })
-    public ResponseEntity<Void> createTournament(@RequestBody TournamentRequest tournamentRequest) {
-        System.out.format("TournamentApi | createTournament name=%s",tournamentRequest.getName());
-        tournamentService.createTournament(tournamentRequest.getName(), tournamentRequest.getTeamInfoIds(), tournamentRequest.getNbOfGroups());
+    @GetMapping("/{id}")
+    public ResponseEntity<TournamentResponse> getTournamentById(@PathVariable Long id) {
+        Tournament tournament = tournamentService.getTournamentById(id);
+        if (tournament == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(TournamentMapper.toResponse(tournament));
+    }
+
+    @PostMapping
+    public ResponseEntity<TournamentResponse> createTournament(@RequestBody TournamentRequest tournamentRequest) {
+        log.info("TournamentApi | createTournament name={}", tournamentRequest.getName());
+        Tournament tournament = tournamentService.createTournament(tournamentRequest);
+        return ResponseEntity
+                .created(URI.create("/tournaments/" + tournament.getId()))
+                .body(TournamentMapper.toResponse(tournament));
+    }
+
+    @PostMapping("/{tournamentId}/start")
+    public ResponseEntity<Void> startTournament(@PathVariable Long tournamentId) {
+        tournamentService.startTournament(tournamentId);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/tournament/{tournamentId}")
-    @ApiOperation(value = "Find a tournament", response = ResponseEntity.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully created the tournament"),
-            @ApiResponse(code = 404, message = "Tournament not found"),
-            @ApiResponse(code = 500, message = "Internal server error")
-    })
-    public ResponseEntity<Tournament> findTournament(@PathVariable("tournamentId") int tournamentId) {
-        System.out.format("TournamentApi | findTournament tournamentId=%s", tournamentId);
-        Tournament tournament = tournamentRepository.findById(tournamentId)
-                .orElseThrow(RuntimeException::new);
-        return new ResponseEntity<>(tournament, HttpStatus.OK);
+    @PutMapping("/{tournamentId}")
+    public ResponseEntity<TournamentResponse> updateTournament(@PathVariable Long tournamentId,
+                                                               @RequestBody TournamentRequest tournamentRequest) {
+        Tournament tournament = tournamentService.updateTournament(tournamentId, tournamentRequest);
+        return ResponseEntity.ok(TournamentMapper.toResponse(tournament));
     }
 
-    @GetMapping("/tournament")
-    @ApiOperation(value = "List all tournaments", response = ResponseEntity.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully created the tournament"),
-            @ApiResponse(code = 500, message = "Internal server error")
-    })
-    public ResponseEntity<List<Tournament>> listTournaments() {
-        System.out.format("TournamentApi | listTournaments");
-        return new ResponseEntity<>(tournamentRepository.findAll(), HttpStatus.OK);
+    @DeleteMapping("/{tournamentId}")
+    public ResponseEntity<Void> deleteTournament(@PathVariable Long tournamentId) {
+        tournamentService.deleteTournament(tournamentId);
+        return ResponseEntity.noContent().build();
     }
+
 }

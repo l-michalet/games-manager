@@ -1,55 +1,48 @@
 package com.meritis.gamesmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "teams")
 public class Team {
-    private int id;
-    private int teamInfoId;
-    private int tournamentId;
-    private String groupName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Team(int teamInfoId, int tournamentId, String groupName) {
-        this.teamInfoId = teamInfoId;
-        this.tournamentId = tournamentId;
-        this.groupName = groupName;
-    }
+    @Column(name = "short_name")
+    private String shortName;
 
-    public Team(int id, int teamInfoId, int tournamentId, String groupName) {
-        this.id = id;
-        this.teamInfoId = teamInfoId;
-        this.tournamentId = tournamentId;
-        this.groupName = groupName;
-    }
+    @Column(name = "full_name")
+    private String fullName;
 
-    // Getters and Setters
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(name = "team_tournament",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "tournament_id"))
+    private List<Tournament> tournaments = new ArrayList<>();
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getTeamInfoId() {
-        return teamInfoId;
-    }
-
-    public void setTeamInfoId(int teamInfoId) {
-        this.teamInfoId = teamInfoId;
-    }
-
-    public int getTournamentId() {
-        return tournamentId;
-    }
-
-    public void setTournamentId(int tournamentId) {
-        this.tournamentId = tournamentId;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public Team(String shortName, String fullName, List<Tournament> tournaments) {
+        this.shortName = shortName;
+        this.fullName = fullName;
+        this.tournaments = tournaments;
     }
 }
