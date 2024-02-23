@@ -51,7 +51,7 @@ public class TournamentApi {
 
     @PostMapping
     public ResponseEntity<TournamentResponse> createTournament(@RequestBody TournamentRequest tournamentRequest) {
-        System.out.format("TournamentApi | createTournament name=%s", tournamentRequest.getName());
+        log.info("TournamentApi | createTournament name={}", tournamentRequest.getName());
         Tournament tournament = tournamentService.createTournament(tournamentRequest);
         return ResponseEntity
                 .created(URI.create("/tournaments/" + tournament.getId()))
