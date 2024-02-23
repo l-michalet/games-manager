@@ -1,4 +1,4 @@
-package com.meritis.gamesmanager.mappers;
+package com.meritis.gamesmanager.mapper;
 
 import com.meritis.gamesmanager.model.Tournament;
 import com.meritis.gamesmanager.model.response.TeamResponse;
@@ -13,7 +13,7 @@ public class TournamentMapper {
 
     public static TournamentResponse toResponse(Tournament tournament) {
         List<TeamResponse> teamsResponse = tournament.getTeams().stream()
-                .map(TeamMapper::teamToTeamResponse)
+                .map(TeamMapper.INSTANCE::teamToTeamResponse)
                 .collect(Collectors.toList());
         return new TournamentResponse(tournament.getName(), tournament.getStartDate(), tournament.getEndDate(), tournament.isDirectElimination(), teamsResponse);
     }

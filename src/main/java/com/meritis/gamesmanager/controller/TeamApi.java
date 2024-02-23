@@ -1,10 +1,9 @@
 package com.meritis.gamesmanager.controller;
 
-import com.meritis.gamesmanager.mappers.TeamMapper;
+import com.meritis.gamesmanager.mapper.TeamMapper;
 import com.meritis.gamesmanager.model.Team;
 import com.meritis.gamesmanager.model.request.TeamRequest;
 import com.meritis.gamesmanager.model.response.TeamResponse;
-import com.meritis.gamesmanager.model.response.TeamsResponse;
 import com.meritis.gamesmanager.service.TeamService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,10 +30,10 @@ public class TeamApi {
     private final TeamService teamService;
 
     @GetMapping
-    public ResponseEntity<TeamsResponse> listTeams() {
+    public ResponseEntity<List<TeamResponse>> listTeams() {
         log.info("[TeamApi] listTeams");
         List<Team> teams = teamService.listTeams();
-        return new ResponseEntity<>(TeamMapper.teamsToTeamsResponse(teams), HttpStatus.OK);
+        return new ResponseEntity<>(TeamMapper.INSTANCE.teamsToTeamsResponse(teams), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -44,7 +43,7 @@ public class TeamApi {
         if (team == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(TeamMapper.teamToTeamResponse(team));
+        return ResponseEntity.ok(TeamMapper.INSTANCE.teamToTeamResponse(team));
     }
 
     @PostMapping
@@ -53,6 +52,6 @@ public class TeamApi {
         Team team = teamService.createTeam(teamRequest);
         return ResponseEntity
                 .created(URI.create("/teams/" + team.getId()))
-                .body(TeamMapper.teamToTeamResponse(team));
+                .body(TeamMapper.INSTANCE.teamToTeamResponse(team));
     }
 }

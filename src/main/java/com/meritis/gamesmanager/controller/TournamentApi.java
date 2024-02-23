@@ -1,6 +1,6 @@
 package com.meritis.gamesmanager.controller;
 
-import com.meritis.gamesmanager.mappers.TournamentMapper;
+import com.meritis.gamesmanager.mapper.TournamentMapper;
 import com.meritis.gamesmanager.model.Tournament;
 import com.meritis.gamesmanager.model.request.TournamentRequest;
 import com.meritis.gamesmanager.model.response.TournamentResponse;
