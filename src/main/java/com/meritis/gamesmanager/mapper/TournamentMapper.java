@@ -1,21 +1,16 @@
 package com.meritis.gamesmanager.mapper;
 
 import com.meritis.gamesmanager.model.Tournament;
-import com.meritis.gamesmanager.model.response.TeamResponse;
 import com.meritis.gamesmanager.model.response.TournamentResponse;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-import java.util.stream.Collectors;
+@Mapper
+public interface TournamentMapper {
 
-@Component
-public class TournamentMapper {
+    TournamentMapper INSTANCE = Mappers.getMapper(TournamentMapper.class);
 
-    public static TournamentResponse toResponse(Tournament tournament) {
-        List<TeamResponse> teamsResponse = tournament.getTeams().stream()
-                .map(TeamMapper.INSTANCE::teamToTeamResponse)
-                .collect(Collectors.toList());
-        return new TournamentResponse(tournament.getName(), tournament.getStartDate(), tournament.getEndDate(), tournament.isDirectElimination(), teamsResponse);
-    }
+    TournamentResponse tournamentToTournamentResponse(Tournament tournament);
+
 }
 

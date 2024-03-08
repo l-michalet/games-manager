@@ -32,7 +32,7 @@ public class TeamApi {
     @GetMapping
     public ResponseEntity<List<TeamResponse>> listTeams() {
         log.info("[TeamApi] listTeams");
-        List<Team> teams = teamService.listTeams();
+        List<Team> teams = teamService.getAllTeams();
         return new ResponseEntity<>(TeamMapper.INSTANCE.teamsToTeamsResponse(teams), HttpStatus.OK);
     }
 
@@ -49,7 +49,7 @@ public class TeamApi {
     @PostMapping
     public ResponseEntity<TeamResponse> createTeam(@RequestBody TeamRequest teamRequest) {
         log.info("[TeamApi] createTeam fullName={}", teamRequest.getFullName());
-        Team team = teamService.createTeam(teamRequest);
+        Team team = teamService.saveTeam(teamRequest);
         return ResponseEntity
                 .created(URI.create("/teams/" + team.getId()))
                 .body(TeamMapper.INSTANCE.teamToTeamResponse(team));

@@ -16,24 +16,30 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
+    public List<Team> getAllTeams() {
+        return teamRepository.findAll();
+    }
+
+    public List<Team> getAllTeamsById(List<Long> teamIds) {
+        return teamRepository.findAllById(teamIds);
+    }
+
     public Team getTeamById(Long teamId) {
         return teamRepository.findById(teamId)
                 .orElseThrow(() -> new EntityNotFoundException("Team not found with id: " + teamId));
     }
 
-    public List<Team> listTeams() {
-        return teamRepository.findAll();
-    }
-
-    public Team createTeam(TeamRequest teamRequest) {
-        Team team = new Team(teamRequest.getShortName(),teamRequest.getFullName(), null);
-        teamRepository.save(team);
-        return null;
+    public Team saveTeam(TeamRequest teamRequest) {
+        Team team = new Team(teamRequest.getShortName(),teamRequest.getFullName());
+        return teamRepository.save(team);
     }
 
     public List<Team> saveAll(List<Team> teams) {
         return teamRepository.saveAll(teams);
     }
 
+    public void deleteTeamById(Long id) {
+        teamRepository.deleteById(id);
+    }
 
 }

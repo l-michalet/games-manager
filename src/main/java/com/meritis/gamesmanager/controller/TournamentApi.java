@@ -1,6 +1,7 @@
 package com.meritis.gamesmanager.controller;
 
 import com.meritis.gamesmanager.mapper.TournamentMapper;
+import com.meritis.gamesmanager.model.Team;
 import com.meritis.gamesmanager.model.Tournament;
 import com.meritis.gamesmanager.model.request.TournamentRequest;
 import com.meritis.gamesmanager.model.response.TournamentResponse;
@@ -30,23 +31,14 @@ import java.util.stream.Collectors;
 public class TournamentApi {
     private final TournamentService tournamentService;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<TournamentResponse>> listTournaments() {
         log.info("[TournamentApi] listTournaments");
         List<TournamentResponse> tournaments = tournamentService.listTournaments()
                 .stream()
-                .map(TournamentMapper::toResponse)
+                .map(TournamentMapper.INSTANCE::tournamentToTournamentResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(tournaments);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<TournamentResponse> getTournamentById(@PathVariable Long id) {
-        Tournament tournament = tournamentService.getTournamentById(id);
-        if (tournament == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(TournamentMapper.toResponse(tournament));
     }
 
     @PostMapping
@@ -55,25 +47,50 @@ public class TournamentApi {
         Tournament tournament = tournamentService.createTournament(tournamentRequest);
         return ResponseEntity
                 .created(URI.create("/tournaments/" + tournament.getId()))
-                .body(TournamentMapper.toResponse(tournament));
+                .body(TournamentMapper.INSTANCE.tournamentToTournamentResponse(tournament));
     }
 
-    @PostMapping("/{tournamentId}/start")
-    public ResponseEntity<Void> startTournament(@PathVariable Long tournamentId) {
-        tournamentService.startTournament(tournamentId);
-        return ResponseEntity.ok().build();
+    @GetMapping("/{tournamentId}")
+    public ResponseEntity<TournamentResponse> getTournamentById(@PathVariable Long tournamentId) {
+        Tournament tournament = tournamentService.getTournamentById(tournamentId);
+        if (tournament == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(TournamentMapper.INSTANCE.tournamentToTournamentResponse(tournament));
     }
 
     @PutMapping("/{tournamentId}")
     public ResponseEntity<TournamentResponse> updateTournament(@PathVariable Long tournamentId,
                                                                @RequestBody TournamentRequest tournamentRequest) {
         Tournament tournament = tournamentService.updateTournament(tournamentId, tournamentRequest);
-        return ResponseEntity.ok(TournamentMapper.toResponse(tournament));
+        return ResponseEntity.ok(TournamentMapper.INSTANCE.tournamentToTournamentResponse(tournament));
     }
 
     @DeleteMapping("/{tournamentId}")
     public ResponseEntity<Void> deleteTournament(@PathVariable Long tournamentId) {
         tournamentService.deleteTournament(tournamentId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{tournamentId}/next")
+    public ResponseEntity<Void> continueTournament(@PathVariable Long tournamentId) {
+        tournamentService.continueTournament(tournamentId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{tournamentId}/teams")
+    public ResponseEntity<List<Team>> addTeamsToTournament(@PathVariable Long tournamentId, @RequestBody List<Long> teamIds) {
+        return ResponseEntity.ok(tournamentService.addTeamsToTournament(tournamentId, teamIds));
+    }
+
+    @GetMapping("/{tournamentId}/teams")
+    public ResponseEntity<List<Team>> getTeamsInTournament(@PathVariable Long tournamentId) {
+        return ResponseEntity.ok(tournamentService.getTeamsInTournament(tournamentId));
+    }
+
+    @DeleteMapping("/{tournamentId}/teams/{teamId}")
+    public ResponseEntity<TournamentResponse> removeTeamFromTournament(@PathVariable Long tournamentId, @PathVariable Long teamId) {
+        tournamentService.removeTeamFromTournament(tournamentId, teamId);
         return ResponseEntity.noContent().build();
     }
 
